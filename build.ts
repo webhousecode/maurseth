@@ -146,7 +146,7 @@ function markdownToHtml(md: string): string {
   html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
   html = html.replace(/`(.+?)`/g, '<code>$1</code>');
   html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => {
-    const imgSrc = src.startsWith('uploads/') ? `${BASE}/${src}` : src;
+    const imgSrc = src.startsWith('/uploads/') ? `${BASE}${src}` : src.startsWith('uploads/') ? `${BASE}/${src}` : src;
     return `<img src="${esc(imgSrc)}" alt="${esc(alt)}" loading="lazy" />`;
   });
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
