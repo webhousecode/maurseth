@@ -17,7 +17,7 @@ const ROOT = import.meta.dirname ?? dirname(new URL(import.meta.url).pathname);
 const BASE = (process.env.BASE_PATH ?? '').replace(/\/+$/, '');
 const DIST = join(ROOT, process.env.BUILD_OUT_DIR ?? 'dist');
 const CONTENT = join(ROOT, 'content');
-const MEDIA_SRC = join(ROOT, 'media');
+const MEDIA_SRC = join(ROOT, 'public', 'uploads');
 
 // ---------------------------------------------------------------------------
 // Types
@@ -146,7 +146,7 @@ function markdownToHtml(md: string): string {
   html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
   html = html.replace(/`(.+?)`/g, '<code>$1</code>');
   html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => {
-    const imgSrc = src.startsWith('media/') ? `${BASE}/${src}` : src;
+    const imgSrc = src.startsWith('uploads/') ? `${BASE}/${src}` : src;
     return `<img src="${esc(imgSrc)}" alt="${esc(alt)}" loading="lazy" />`;
   });
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
@@ -756,7 +756,7 @@ function build() {
   // Copy media
   if (existsSync(MEDIA_SRC)) {
     console.log('  Copying media...');
-    cpSync(MEDIA_SRC, join(DIST, 'media'), { recursive: true });
+    cpSync(MEDIA_SRC, join(DIST, 'uploads'), { recursive: true });
   }
 
   // Build pages from CMS sections

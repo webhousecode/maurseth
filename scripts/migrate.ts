@@ -16,7 +16,7 @@ import { Readable } from 'node:stream';
 
 const ROOT = dirname(import.meta.dirname ?? new URL('.', import.meta.url).pathname);
 const CONTENT = join(ROOT, 'content');
-const MEDIA = join(ROOT, 'media');
+const MEDIA = join(ROOT, 'public', 'uploads');
 const WP = 'https://www.maurseth.dk/wp-json/wp/v2';
 
 // ---------------------------------------------------------------------------
@@ -222,7 +222,7 @@ async function migrateMedia(): Promise<Map<string, string>> {
       const ext = extname(sourceUrl).split('?')[0] || '.jpg';
       const filename = `${item.id}-${slugify(item.slug || item.title?.rendered || String(item.id))}${ext}`;
       const dest = join(MEDIA, filename);
-      const localPath = `media/${filename}`;
+      const localPath = `uploads/${filename}`;
 
       const ok = await downloadFile(sourceUrl, dest);
       if (ok) {

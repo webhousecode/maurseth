@@ -4,4 +4,5 @@ deploy/
 .cms/
 _data/
 _revisions/
+public/uploads/
 .DS_Store
