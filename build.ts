@@ -311,10 +311,9 @@ img { max-width: 100%; display: block; }
 .nav-hamburger span:nth-child(2) { top: 9px; }
 .nav-hamburger span:nth-child(3) { top: 18px; }
 
-/* ---- Hero / Parallax ---- */
+/* ---- Hero / Split layout ---- */
 .hero {
-  position: relative; height: 85vh; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
+  position: relative; min-height: 90vh; overflow: hidden;
   margin-top: 60px;
 }
 .hero-bg {
@@ -324,18 +323,92 @@ img { max-width: 100%; display: block; }
 }
 .hero-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(26,23,20,0.2) 0%, rgba(26,23,20,0.6) 100%);
+  background: linear-gradient(135deg, rgba(26,23,20,0.65) 0%, rgba(26,23,20,0.15) 60%, transparent 100%);
 }
-.hero-content {
-  position: relative; z-index: 2; text-align: center; color: var(--text-light);
+.hero-split {
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: 1fr 1fr; min-height: 90vh;
+  max-width: 1300px; margin: 0 auto; padding: 0 3rem;
+  align-items: center;
 }
-.hero-content h1 {
-  font-family: var(--serif); font-size: 4rem; font-weight: 300;
-  letter-spacing: 0.04em; line-height: 1.15;
+.hero-text { color: var(--text-light); }
+.hero-text .hero-label {
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--accent-light); margin-bottom: 1.5rem;
 }
-.hero-content p {
-  font-size: 1rem; font-weight: 400; letter-spacing: 0.18em;
-  text-transform: uppercase; margin-top: 1rem; color: rgba(245,240,235,0.75);
+.hero-text h1 {
+  font-family: var(--serif); font-size: 3.75rem; font-weight: 300;
+  letter-spacing: 0.02em; line-height: 1.15; margin-bottom: 1.5rem;
+}
+.hero-text .hero-sub {
+  font-size: 1.05rem; line-height: 1.8; color: rgba(245,240,235,0.7);
+  max-width: 440px;
+}
+.hero-text .hero-cta {
+  display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 2rem;
+  padding: 0.7rem 1.75rem; border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 3px; color: var(--text-light); font-size: 0.8rem;
+  letter-spacing: 0.08em; text-transform: uppercase; transition: 0.3s;
+}
+.hero-text .hero-cta:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); }
+.hero-portrait {
+  display: flex; justify-content: flex-end; align-items: flex-end;
+  padding-bottom: 0;
+}
+.hero-portrait img {
+  max-height: 80vh; width: auto; max-width: 100%;
+  filter: drop-shadow(0 8px 32px rgba(0,0,0,0.3));
+}
+
+/* Wave divider */
+.wave-divider { margin-top: -4rem; position: relative; z-index: 3; }
+.wave-divider svg { display: block; width: 100%; height: auto; }
+
+/* ---- "For Tiden" collage ---- */
+.collage-section { background: var(--bg); padding: 5rem 2rem; }
+.collage-grid {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto auto;
+  gap: 1rem;
+}
+.collage-grid .cg-wide { grid-column: span 2; }
+.collage-grid .cg-tall { grid-row: span 2; }
+.collage-grid .cg-accent {
+  grid-row: span 2; background: var(--bg-dark); color: var(--text-light);
+  border-radius: 8px; padding: 2.5rem 2rem;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.collage-grid .cg-accent h2 {
+  font-family: var(--serif); font-size: 1.75rem; font-weight: 300;
+  line-height: 1.3; color: var(--accent-light);
+}
+.collage-grid .cg-accent p { margin-top: 1rem; font-size: 0.9rem; color: rgba(245,240,235,0.6); }
+.collage-grid .cg-accent a {
+  margin-top: 1.5rem; font-size: 0.75rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent-light);
+}
+.collage-grid img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 8px;
+  transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.collage-grid a:hover img { transform: scale(1.03); }
+
+/* ---- News cards (home) ---- */
+.news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.news-card { display: block; text-decoration: none; color: inherit; }
+.news-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 6px; transition: opacity 0.3s; }
+.news-card:hover img { opacity: 0.85; }
+.news-card .news-cat { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-top: 0.75rem; }
+.news-card h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 400; margin-top: 0.3rem; line-height: 1.4; }
+.news-card .news-date { font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; }
+
+@media (max-width: 768px) {
+  .hero-split { grid-template-columns: 1fr; text-align: center; padding: 0 1.5rem; }
+  .hero-portrait { justify-content: center; padding-top: 2rem; }
+  .hero-portrait img { max-height: 50vh; }
+  .hero-text h1 { font-size: 2.5rem; }
+  .collage-grid { grid-template-columns: 1fr 1fr; }
+  .news-grid { grid-template-columns: 1fr; }
 }
 
 /* ---- Gallery Grid (Elina Voss pattern) ---- */
@@ -545,16 +618,51 @@ function footer(globals: Globals): string {
 // Block renderers
 // ---------------------------------------------------------------------------
 
-function renderHero(block: Section, globals: Globals): string {
+function renderHero(block: Section, globals: Globals, isHome = false): string {
+  const bgImg = globals.heroImage ? `${BASE}/${globals.heroImage}` : '';
+  const portraitImg = `${BASE}/uploads/901-grethepenslerr.png`;
+
+  if (isHome) {
+    return `
+<section class="hero">
+  ${bgImg ? `<img class="hero-bg" src="${esc(`${BASE}/uploads/914-forsidebaggrund.jpg`)}" alt="" id="parallax-hero" />` : ''}
+  <div class="hero-overlay"></div>
+  <div class="hero-split">
+    <div class="hero-text">
+      <div class="hero-label">${esc(globals.artistTitle || 'Billedkunstner')}</div>
+      <h1>${esc(block.title || globals.artistName)}</h1>
+      <p class="hero-sub">Akrylmalerier, grafik og collager. Udstiller i Danmark, Norge og Island siden 2005.</p>
+      <a href="${BASE}/galleri/" class="hero-cta">Se galleriet &rarr;</a>
+    </div>
+    <div class="hero-portrait">
+      <img src="${esc(portraitImg)}" alt="${esc(globals.artistName)}" />
+    </div>
+  </div>
+</section>
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path fill="var(--bg)" d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z"/></svg>
+</div>
+<script>
+(function(){
+  var hero = document.getElementById('parallax-hero');
+  if (!hero) return;
+  window.addEventListener('scroll', function() {
+    hero.style.transform = 'translateY(' + (window.scrollY * 0.35) + 'px)';
+  }, { passive: true });
+})();
+</script>`;
+  }
+
+  // Non-home hero (simple centered)
   const img = block.image || globals.heroImage;
   const imgSrc = img ? (img.startsWith('http') ? img : `${BASE}/${img}`) : '';
   return `
-<section class="hero">
+<section class="hero" style="min-height:60vh;">
   ${imgSrc ? `<img class="hero-bg" src="${esc(imgSrc)}" alt="" id="parallax-hero" />` : ''}
   <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <h1>${esc(block.title || globals.artistName)}</h1>
-    ${block.subtitle ? `<p>${esc(block.subtitle)}</p>` : ''}
+  <div style="position:relative;z-index:2;text-align:center;color:var(--text-light);">
+    <h1 style="font-family:var(--serif);font-size:3.5rem;font-weight:300;">${esc(block.title || '')}</h1>
+    ${block.subtitle ? `<p style="font-size:1rem;letter-spacing:0.18em;text-transform:uppercase;margin-top:1rem;color:rgba(245,240,235,0.75);">${esc(block.subtitle)}</p>` : ''}
   </div>
 </section>
 <script>
@@ -741,6 +849,108 @@ function buildPage(page: Doc<PageData>, globals: Globals, gallery: Doc<GalleryIt
 <body>
   ${nav(globals, active)}
   ${renderSections(sections, globals, gallery, exhibitions)}
+  ${footer(globals)}
+</body>
+</html>`;
+}
+
+function buildHome(globals: Globals, gallery: Doc<GalleryItem>[], exhibitions: Doc<Exhibition>[], posts: Doc<Post>[]): string {
+  // Featured artwork images for collage
+  const collageImages = [
+    { file: 'uploads/2268-sofia-paa-papir.jpg', title: 'Sofia', wide: true },
+    { file: 'uploads/2300-nora-akryl-60-x-120.jpg', title: 'Nora', tall: true },
+    { file: 'uploads/2297-ava-210-3.jpg', title: 'Ava' },
+    { file: 'uploads/1027-vandreren-akryl-70-x70.jpg', title: 'Vandreren' },
+    { file: 'uploads/2409-anna-akryl-60-x-120-kopi.jpg', title: 'Anna' },
+  ];
+
+  const collageHtml = `
+  <div class="collage-grid">
+    <a href="${BASE}/galleri/" class="cg-wide" style="overflow:hidden;border-radius:8px;">
+      <img src="${BASE}/${collageImages[0].file}" alt="${collageImages[0].title}" loading="lazy" />
+    </a>
+    <div class="cg-accent">
+      <h2>For Tiden Er Jeg I Diskussion Med Mig Selv</h2>
+      <p>Akrylmalerier, grafik og collager fra atelieret i Aalborg</p>
+      <a href="${BASE}/for-tiden/">Læs mere &rarr;</a>
+    </div>
+    <a href="${BASE}/galleri/" class="cg-tall" style="overflow:hidden;border-radius:8px;">
+      <img src="${BASE}/${collageImages[1].file}" alt="${collageImages[1].title}" loading="lazy" />
+    </a>
+    <a href="${BASE}/galleri/" style="overflow:hidden;border-radius:8px;">
+      <img src="${BASE}/${collageImages[2].file}" alt="${collageImages[2].title}" loading="lazy" />
+    </a>
+    <a href="${BASE}/galleri/" style="overflow:hidden;border-radius:8px;">
+      <img src="${BASE}/${collageImages[3].file}" alt="${collageImages[3].title}" loading="lazy" />
+    </a>
+    <a href="${BASE}/galleri/" style="overflow:hidden;border-radius:8px;">
+      <img src="${BASE}/${collageImages[4].file}" alt="${collageImages[4].title}" loading="lazy" />
+    </a>
+  </div>`;
+
+  // Recent exhibitions (with images, max 4)
+  const recentEx = [...exhibitions]
+    .filter(e => e.data.featuredImage)
+    .sort((a, b) => (b.data.year || 0) - (a.data.year || 0))
+    .slice(0, 4);
+
+  const exCards = recentEx.map(e => {
+    const img = e.data.featuredImage;
+    const imgSrc = img.startsWith('http') ? img : `${BASE}/${img}`;
+    return `
+    <a class="exhibition-card" href="${BASE}/udstillinger/${e.slug}/">
+      <img class="exhibition-card-img" src="${esc(imgSrc)}" alt="${esc(e.data.title)}" loading="lazy" />
+      <div class="exhibition-card-body">
+        <h3>${esc(e.data.title)}</h3>
+        <div class="ex-meta">${e.data.year || ''}</div>
+      </div>
+    </a>`;
+  }).join('\n');
+
+  // Recent news (max 3)
+  const recentPosts = [...posts]
+    .sort((a, b) => (b.data.date || '').localeCompare(a.data.date || ''))
+    .slice(0, 3);
+
+  const newsCards = recentPosts.map(p => {
+    const img = p.data.featuredImage;
+    const imgSrc = img ? (img.startsWith('http') ? img : `${BASE}/${img}`) : '';
+    return `
+    <a class="news-card" href="${BASE}/nyheder/${p.slug}/">
+      ${imgSrc ? `<img src="${esc(imgSrc)}" alt="" loading="lazy" />` : ''}
+      <div class="news-cat">${esc(p.data.category || 'Nyheder')}</div>
+      <h3>${esc(p.data.title)}</h3>
+      <div class="news-date">${formatDate(p.data.date)}</div>
+    </a>`;
+  }).join('\n');
+
+  return `${head(globals.artistName, globals, globals.metaDescription)}
+<body>
+  ${nav(globals, 'forside')}
+  ${renderHero({_block:'hero', title: globals.artistName, subtitle: globals.artistTitle}, globals, true)}
+
+  <section class="collage-section">
+    <div class="section" style="padding-top:2rem;">
+      <h2 class="section-heading">Udvalgte værker</h2>
+      <div class="section-divider"></div>
+    </div>
+    ${collageHtml}
+  </section>
+
+  <section class="section">
+    <h2 class="section-heading">Aktuelle udstillinger</h2>
+    <div class="section-divider"></div>
+    <div class="exhibition-cards">${exCards}</div>
+    <p style="margin-top:2rem;"><a href="${BASE}/udstillinger/" style="color:var(--accent);font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;">Se alle udstillinger &rarr;</a></p>
+  </section>
+
+  <section class="section">
+    <h2 class="section-heading">Nyheder</h2>
+    <div class="section-divider"></div>
+    <div class="news-grid">${newsCards}</div>
+    <p style="margin-top:2rem;"><a href="${BASE}/nyheder/" style="color:var(--accent);font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;">Alle nyheder &rarr;</a></p>
+  </section>
+
   ${footer(globals)}
 </body>
 </html>`;
@@ -1151,13 +1361,17 @@ function build() {
     'nyheder': 'nyheder',
   };
 
+  // Home page (custom builder)
+  writeFile(join(DIST, 'index.html'), buildHome(globals, gallery, exhibitions, posts));
+
   for (const page of pages) {
     const route = pageRoutes[page.slug];
     if (!route) continue;
+    if (page.slug === 'forside') continue; // Built above with custom buildHome
     if (page.slug === 'nyheder') continue; // Built separately with post listing
     if (page.slug === 'galleri' || page.slug === 'collager') continue; // Built separately with gallery grid
 
-    const outPath = route === '/' ? join(DIST, 'index.html') : join(DIST, route.slice(1), 'index.html');
+    const outPath = join(DIST, route.slice(1), 'index.html');
     writeFile(outPath, buildPage(page, globals, gallery, exhibitions, activeMap[page.slug]));
   }
 

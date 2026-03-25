@@ -3,7 +3,7 @@
   "status": "published",
   "data": {
     "title": "Forside",
-    "metaDescription": "",
+    "metaDescription": "Grethe Mariann Maurseth — billedkunstner i Aalborg. Akrylmalerier, grafik og collager.",
     "sections": [
       {
         "_block": "hero",
@@ -16,6 +16,16 @@
         "heading": "Udvalgte værker",
         "category": "all",
         "maxItems": 6
+      },
+      {
+        "_block": "exhibition-list",
+        "heading": "Aktuelle udstillinger",
+        "showYears": "2026,2025"
+      },
+      {
+        "_block": "text-section",
+        "heading": "",
+        "content": ""
       }
     ]
   },
