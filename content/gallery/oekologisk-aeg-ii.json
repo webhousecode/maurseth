@@ -9,8 +9,16 @@
     "image": "uploads/1029-oekologisk-aeg-ii-akryl-40-x-40.jpg",
     "sold": false,
     "category": "vaerker",
-    "sortOrder": 830
+    "sortOrder": 830,
+    "_fieldMeta": {},
+    "_lastEditedBy": {
+      "userId": "fb4eda6a-bc5c-4dec-8cb6-c77c9fb74cd9",
+      "name": "Christian Broberg",
+      "email": "cb@webhouse.dk",
+      "at": "2026-03-25T22:46:24.594Z"
+    }
   },
   "id": "tR8srTQQzfwpzLR-_W0PI",
-  "_fieldMeta": {}
+  "_fieldMeta": {},
+  "updatedAt": "2026-03-25T22:46:24.625Z"
 }

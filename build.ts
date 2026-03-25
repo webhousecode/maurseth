@@ -221,6 +221,52 @@ img { max-width: 100%; display: block; }
 .nav-links a:hover, .nav-links a.active {
   color: var(--text); border-bottom-color: var(--accent);
 }
+
+/* Nav dropdown */
+.nav-dropdown { position: relative; }
+.nav-dropdown > a::after { content: ' \\25BE'; font-size: 0.65em; }
+.nav-dropdown-menu {
+  display: none; position: absolute; top: calc(100% + 0.75rem); left: -0.75rem;
+  background: rgba(250,248,245,0.97); backdrop-filter: blur(12px);
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 0.5rem 0; min-width: 160px; z-index: 110;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu a {
+  display: block; padding: 0.5rem 1.25rem; font-size: 0.8125rem;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em;
+  border-bottom: none !important;
+}
+.nav-dropdown-menu a:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+
+/* Gallery filters */
+.gallery-filters {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; align-items: center;
+}
+.gallery-tab {
+  padding: 0.4rem 1rem; font-size: 0.8rem; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--muted); border: 1px solid var(--border);
+  border-radius: 3px; cursor: pointer; background: transparent; transition: 0.2s;
+  text-decoration: none; display: inline-block;
+}
+.gallery-tab:hover { color: var(--text); border-color: var(--text); }
+.gallery-tab.active { color: var(--accent); border-color: var(--accent); background: rgba(184,134,11,0.05); }
+.gallery-year-select {
+  padding: 0.4rem 0.75rem; font-size: 0.8rem; border: 1px solid var(--border);
+  border-radius: 3px; background: transparent; color: var(--text); font-family: var(--sans);
+  cursor: pointer; margin-left: auto;
+}
+
+/* Load more */
+.load-more-btn {
+  display: block; margin: 3rem auto 0; padding: 0.75rem 2.5rem;
+  font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid var(--accent); border-radius: 3px;
+  background: transparent; cursor: pointer; transition: 0.2s; font-family: var(--sans);
+}
+.load-more-btn:hover { background: var(--accent); color: #fff; }
+
 .nav-hamburger {
   display: none; background: none; border: none; cursor: pointer;
   width: 28px; height: 20px; position: relative;
@@ -391,24 +437,24 @@ function head(title: string, globals: Globals, description?: string): string {
 }
 
 function nav(globals: Globals, active?: string): string {
-  const links = [
-    { href: '/', label: 'Forside', key: 'forside' },
-    { href: '/galleri/', label: 'Galleri', key: 'galleri' },
-    { href: '/udstillinger/', label: 'Udstillinger', key: 'udstillinger' },
-    { href: '/profil/', label: 'Profil', key: 'profil' },
-    { href: '/nyheder/', label: 'Nyheder', key: 'nyheder' },
-    { href: '/kontakt/', label: 'Kontakt', key: 'kontakt' },
-  ];
-  const navLinks = links.map(l =>
-    `<a href="${BASE}${l.href}" class="${active === l.key ? 'active' : ''}">${l.label}</a>`
-  ).join('\n        ');
-
   return `
 <nav class="nav">
   <div class="nav-inner">
     <a href="${BASE}/" class="nav-logo">${esc(globals.artistName)}<span>${esc(globals.artistTitle)}</span></a>
     <div class="nav-links">
-      ${navLinks}
+      <a href="${BASE}/" class="${active === 'forside' ? 'active' : ''}">Forside</a>
+      <div class="nav-dropdown">
+        <a href="${BASE}/galleri/" class="${active === 'galleri' ? 'active' : ''}">Galleri</a>
+        <div class="nav-dropdown-menu">
+          <a href="${BASE}/galleri/vaerker/">Værker</a>
+          <a href="${BASE}/galleri/grafik/">Grafik</a>
+          <a href="${BASE}/galleri/collager/">Collager</a>
+        </div>
+      </div>
+      <a href="${BASE}/udstillinger/" class="${active === 'udstillinger' ? 'active' : ''}">Udstillinger</a>
+      <a href="${BASE}/profil/" class="${active === 'profil' ? 'active' : ''}">Profil</a>
+      <a href="${BASE}/nyheder/" class="${active === 'nyheder' ? 'active' : ''}">Nyheder</a>
+      <a href="${BASE}/kontakt/" class="${active === 'kontakt' ? 'active' : ''}">Kontakt</a>
     </div>
     <button class="nav-hamburger" onclick="document.querySelector('.nav-links').style.display=document.querySelector('.nav-links').style.display==='flex'?'none':'flex'" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -694,14 +740,29 @@ function buildPostsIndex(posts: Doc<Post>[], globals: Globals): string {
 }
 
 function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, category: string, title: string): string {
+  const BATCH = 24;
   const filtered = category === 'all' ? gallery : gallery.filter(g => g.data.category === category);
   const sorted = [...filtered].sort((a, b) => (a.data.sortOrder || 0) - (b.data.sortOrder || 0));
 
-  const cards = sorted.map(g => {
+  // Collect unique years for filter
+  const years = [...new Set(sorted.map(g => g.data.year).filter(y => y > 0))].sort((a, b) => b - a);
+
+  // Build cards as JSON data for progressive loading
+  const cardData = sorted.map(g => ({
+    slug: g.slug,
+    title: g.data.title,
+    image: g.data.image ? `${BASE}/${g.data.image}` : '',
+    medium: g.data.medium || '',
+    dimensions: g.data.dimensions || '',
+    year: g.data.year || 0,
+  }));
+
+  // Render first batch as HTML (for SEO / no-JS fallback)
+  const initialCards = sorted.slice(0, BATCH).map(g => {
     const imgSrc = g.data.image ? `${BASE}/${g.data.image}` : '';
     const meta = [g.data.medium, g.data.dimensions].filter(Boolean).join(' · ');
     return `
-    <a class="gallery-item" href="${BASE}/galleri/${g.slug}/">
+    <a class="gallery-item" href="${BASE}/galleri/${g.slug}/" data-year="${g.data.year || 0}">
       ${imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(g.data.title)}" loading="lazy" />` : ''}
       <div class="gallery-overlay">
         <h3>${esc(g.data.title)}</h3>
@@ -718,20 +779,83 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, catego
     { label: 'Collager', cat: 'collager', href: '/galleri/collager/' },
   ];
   const tabHtml = tabs.map(t =>
-    `<a href="${BASE}${t.href}" style="padding:0.5rem 1rem;font-size:0.8rem;letter-spacing:0.06em;text-transform:uppercase;${t.cat === category ? 'color:var(--accent);border-bottom:2px solid var(--accent);' : 'color:var(--muted);'}">${t.label}</a>`
-  ).join('');
+    `<a href="${BASE}${t.href}" class="gallery-tab${t.cat === category ? ' active' : ''}">${t.label}</a>`
+  ).join('\n      ');
+
+  // Year filter
+  const yearOptions = years.map(y => `<option value="${y}">${y}</option>`).join('');
 
   return `${head(title, globals)}
 <body>
   ${nav(globals, 'galleri')}
   <div class="section" style="margin-top:60px;">
     <h1 class="section-heading">${esc(title)}</h1>
-    <div style="display:flex;gap:0.5rem;margin-bottom:2rem;">${tabHtml}</div>
-    <div class="gallery-grid">
-      ${cards}
+    <div class="gallery-filters">
+      ${tabHtml}
+      ${years.length > 1 ? `<select class="gallery-year-select" id="yearFilter" onchange="filterByYear(this.value)">
+        <option value="all">Alle år</option>
+        ${yearOptions}
+      </select>` : ''}
     </div>
+    <div class="gallery-grid" id="galleryGrid">
+      ${initialCards}
+    </div>
+    ${sorted.length > BATCH ? `<button class="load-more-btn" id="loadMoreBtn" onclick="loadMore()">Vis flere (${sorted.length - BATCH} tilbage)</button>` : ''}
   </div>
   ${footer(globals)}
+  <script>
+  (function(){
+    var BASE = ${JSON.stringify(BASE)};
+    var allItems = ${JSON.stringify(cardData)};
+    var shown = ${BATCH};
+    var BATCH = ${BATCH};
+    var currentYear = 'all';
+    var grid = document.getElementById('galleryGrid');
+    var btn = document.getElementById('loadMoreBtn');
+
+    function makeCard(item) {
+      var meta = [item.medium, item.dimensions].filter(Boolean).join(' \\u00B7 ');
+      return '<a class="gallery-item" href="' + BASE + '/galleri/' + item.slug + '/" data-year="' + item.year + '">'
+        + (item.image ? '<img src="' + item.image + '" alt="' + item.title.replace(/"/g,'&quot;') + '" loading="lazy" />' : '')
+        + '<div class="gallery-overlay"><h3>' + item.title.replace(/</g,'&lt;') + '</h3>'
+        + (meta ? '<span class="meta">' + meta.replace(/</g,'&lt;') + '</span>' : '')
+        + '</div></a>';
+    }
+
+    function getFiltered() {
+      if (currentYear === 'all') return allItems;
+      var y = parseInt(currentYear);
+      return allItems.filter(function(i) { return i.year === y; });
+    }
+
+    function render(items, count) {
+      var html = '';
+      for (var i = 0; i < Math.min(count, items.length); i++) html += makeCard(items[i]);
+      grid.innerHTML = html;
+      if (btn) {
+        var remaining = items.length - count;
+        if (remaining > 0) {
+          btn.style.display = 'block';
+          btn.textContent = 'Vis flere (' + remaining + ' tilbage)';
+        } else {
+          btn.style.display = 'none';
+        }
+      }
+    }
+
+    window.loadMore = function() {
+      var items = getFiltered();
+      shown += BATCH;
+      render(items, shown);
+    };
+
+    window.filterByYear = function(year) {
+      currentYear = year;
+      shown = BATCH;
+      render(getFiltered(), shown);
+    };
+  })();
+  </script>
 </body>
 </html>`;
 }
