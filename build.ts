@@ -1167,15 +1167,14 @@ function buildPostsIndex(posts: Doc<Post>[], globals: Globals): string {
 </html>`;
 }
 
-function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, category: string, title: string): string {
+function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals): string {
   const BATCH = 24;
-  const filtered = category === 'all' ? gallery : gallery.filter(g => g.data.category === category);
-  const sorted = [...filtered].sort((a, b) => (a.data.sortOrder || 0) - (b.data.sortOrder || 0));
+  const sorted = [...gallery].sort((a, b) => (a.data.sortOrder || 0) - (b.data.sortOrder || 0));
 
-  // Collect unique years for filter
+  // Collect unique years across ALL items
   const years = [...new Set(sorted.map(g => g.data.year).filter(y => y > 0))].sort((a, b) => b - a);
 
-  // Build cards as JSON data for progressive loading
+  // All items as JSON for JS filtering
   const cardData = sorted.map(g => ({
     slug: g.slug,
     title: g.data.title,
@@ -1183,14 +1182,15 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, catego
     medium: g.data.medium || '',
     dimensions: g.data.dimensions || '',
     year: g.data.year || 0,
+    category: g.data.category || 'vaerker',
   }));
 
-  // Render first batch as HTML (for SEO / no-JS fallback)
+  // First batch HTML (SEO fallback)
   const initialCards = sorted.slice(0, BATCH).map(g => {
     const imgSrc = g.data.image ? `${BASE}/${g.data.image}` : '';
     const meta = [g.data.medium, g.data.dimensions].filter(Boolean).join(' · ');
     return `
-    <a class="gallery-item" href="${BASE}/galleri/${g.slug}/" data-year="${g.data.year || 0}">
+    <a class="gallery-item" href="${BASE}/galleri/${g.slug}/">
       ${imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(g.data.title)}" loading="lazy" />` : ''}
       <div class="gallery-overlay">
         <h3>${esc(g.data.title)}</h3>
@@ -1199,35 +1199,25 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, catego
     </a>`;
   }).join('\n');
 
-  // Category tabs
-  const tabs = [
-    { label: 'Alle', cat: 'all', href: '/galleri/' },
-    { label: 'Værker', cat: 'vaerker', href: '/galleri/vaerker/' },
-    { label: 'Grafik', cat: 'grafik', href: '/galleri/grafik/' },
-    { label: 'Collager', cat: 'collager', href: '/galleri/collager/' },
-  ];
-  const tabHtml = tabs.map(t =>
-    `<a href="${BASE}${t.href}" class="gallery-tab${t.cat === category ? ' active' : ''}">${t.label}</a>`
-  ).join('\n      ');
-
-  // Year filter
-  const yearOptions = years.map(y => `<option value="${y}">${y}</option>`).join('');
-
-  return `${head(title, globals)}
+  return `${head('Galleri', globals)}
 <body>
   ${nav(globals, 'galleri')}
   <div class="section" style="margin-top:60px;">
-    <h1 class="section-heading">${esc(title)}</h1>
+    <h1 class="section-heading">Galleri</h1>
     <div class="gallery-filters">
-      ${tabHtml}
-      ${years.length > 1 ? `<div class="year-dropdown" id="yearDropdown">
+      <button class="gallery-tab active" onclick="selectCat('all',this)">Alle</button>
+      <button class="gallery-tab" onclick="selectCat('vaerker',this)">Værker</button>
+      <button class="gallery-tab" onclick="selectCat('grafik',this)">Grafik</button>
+      <button class="gallery-tab" onclick="selectCat('collager',this)">Collager</button>
+      <div class="year-dropdown" id="yearDropdown">
         <button class="year-dropdown-toggle" id="yearToggle" onclick="toggleYearDropdown()">Alle år</button>
         <div class="year-dropdown-menu"><div class="year-dropdown-menu-inner">
           <button class="active" onclick="selectYear('all',this)">Alle år</button>
           ${years.map(y => `<button onclick="selectYear('${y}',this)">${y}</button>`).join('\n          ')}
         </div></div>
-      </div>` : ''}
+      </div>
     </div>
+    <div id="galleryCount" style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem;">${sorted.length} værker</div>
     <div class="gallery-grid" id="galleryGrid">
       ${initialCards}
     </div>
@@ -1241,12 +1231,14 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, catego
     var shown = ${BATCH};
     var BATCH = ${BATCH};
     var currentYear = 'all';
+    var currentCat = 'all';
     var grid = document.getElementById('galleryGrid');
     var btn = document.getElementById('loadMoreBtn');
+    var countEl = document.getElementById('galleryCount');
 
     function makeCard(item) {
       var meta = [item.medium, item.dimensions].filter(Boolean).join(' \\u00B7 ');
-      return '<a class="gallery-item" href="' + BASE + '/galleri/' + item.slug + '/" data-year="' + item.year + '">'
+      return '<a class="gallery-item" href="' + BASE + '/galleri/' + item.slug + '/">'
         + (item.image ? '<img src="' + item.image + '" alt="' + item.title.replace(/"/g,'&quot;') + '" loading="lazy" />' : '')
         + '<div class="gallery-overlay"><h3>' + item.title.replace(/</g,'&lt;') + '</h3>'
         + (meta ? '<span class="meta">' + meta.replace(/</g,'&lt;') + '</span>' : '')
@@ -1254,15 +1246,18 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, catego
     }
 
     function getFiltered() {
-      if (currentYear === 'all') return allItems;
-      var y = parseInt(currentYear);
-      return allItems.filter(function(i) { return i.year === y; });
+      return allItems.filter(function(i) {
+        var catOk = currentCat === 'all' || i.category === currentCat;
+        var yearOk = currentYear === 'all' || i.year === parseInt(currentYear);
+        return catOk && yearOk;
+      });
     }
 
     function render(items, count) {
       var html = '';
       for (var i = 0; i < Math.min(count, items.length); i++) html += makeCard(items[i]);
       grid.innerHTML = html;
+      countEl.textContent = items.length + ' værker';
       if (btn) {
         var remaining = items.length - count;
         if (remaining > 0) {
@@ -1275,31 +1270,35 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, catego
     }
 
     window.loadMore = function() {
-      var items = getFiltered();
       shown += BATCH;
-      render(items, shown);
-    };
-
-    window.filterByYear = function(year) {
-      currentYear = year;
-      shown = BATCH;
       render(getFiltered(), shown);
     };
 
-    window.toggleYearDropdown = function() {
-      var dd = document.getElementById('yearDropdown');
-      dd.classList.toggle('open');
+    function applyFilters() {
+      shown = BATCH;
+      render(getFiltered(), shown);
+    }
+
+    window.selectCat = function(cat, el) {
+      currentCat = cat;
+      document.querySelectorAll('.gallery-tab').forEach(function(b) { b.classList.remove('active'); });
+      el.classList.add('active');
+      applyFilters();
     };
 
     window.selectYear = function(year, el) {
-      filterByYear(year);
+      currentYear = year;
       var toggle = document.getElementById('yearToggle');
       toggle.textContent = year === 'all' ? 'Alle år' : year;
       toggle.className = 'year-dropdown-toggle' + (year !== 'all' ? ' active' : '');
-      var dd = document.getElementById('yearDropdown');
-      dd.classList.remove('open');
-      dd.querySelectorAll('button').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('yearDropdown').classList.remove('open');
+      document.getElementById('yearDropdown').querySelectorAll('.year-dropdown-menu-inner button').forEach(function(b) { b.classList.remove('active'); });
       el.classList.add('active');
+      applyFilters();
+    };
+
+    window.toggleYearDropdown = function() {
+      document.getElementById('yearDropdown').classList.toggle('open');
     };
 
     document.addEventListener('click', function(e) {
@@ -1376,11 +1375,12 @@ function build() {
     writeFile(outPath, buildPage(page, globals, gallery, exhibitions, activeMap[page.slug]));
   }
 
-  // Gallery index pages (with category tabs)
-  writeFile(join(DIST, 'galleri', 'index.html'), buildGalleryIndex(gallery, globals, 'all', 'Galleri'));
-  writeFile(join(DIST, 'galleri', 'vaerker', 'index.html'), buildGalleryIndex(gallery, globals, 'vaerker', 'Værker'));
-  writeFile(join(DIST, 'galleri', 'grafik', 'index.html'), buildGalleryIndex(gallery, globals, 'grafik', 'Grafik'));
-  writeFile(join(DIST, 'galleri', 'collager', 'index.html'), buildGalleryIndex(gallery, globals, 'collager', 'Collager'));
+  // Gallery index (single page with JS category + year filters)
+  writeFile(join(DIST, 'galleri', 'index.html'), buildGalleryIndex(gallery, globals));
+  // Keep sub-routes pointing to same page for nav dropdown links
+  writeFile(join(DIST, 'galleri', 'vaerker', 'index.html'), buildGalleryIndex(gallery, globals));
+  writeFile(join(DIST, 'galleri', 'grafik', 'index.html'), buildGalleryIndex(gallery, globals));
+  writeFile(join(DIST, 'galleri', 'collager', 'index.html'), buildGalleryIndex(gallery, globals));
 
   // Gallery detail pages
   for (const item of gallery) {
