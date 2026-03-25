@@ -256,16 +256,34 @@ img { max-width: 100%; display: block; }
 }
 .gallery-tab:hover { color: var(--text); border-color: var(--text); }
 .gallery-tab.active { color: var(--accent); border-color: var(--accent); background: rgba(184,134,11,0.05); }
-.gallery-year-select {
-  padding: 0.4rem 1rem 0.4rem 0.75rem; font-size: 0.8rem; letter-spacing: 0.06em;
+/* Year filter — custom dropdown (no native select) */
+.year-dropdown { position: relative; margin-left: auto; }
+.year-dropdown-toggle {
+  padding: 0.4rem 1rem; font-size: 0.8rem; letter-spacing: 0.06em;
   text-transform: uppercase; border: 1px solid var(--border); border-radius: 3px;
-  background: var(--bg); color: var(--text); font-family: var(--sans);
-  cursor: pointer; margin-left: auto;
-  -webkit-appearance: none; -moz-appearance: none; appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a8078'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 0.6rem center;
-  padding-right: 1.8rem;
+  background: transparent; color: var(--text); font-family: var(--sans);
+  cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
 }
+.year-dropdown-toggle::after { content: '\\25BE'; font-size: 0.65em; color: var(--muted); }
+.year-dropdown-toggle.active { color: var(--accent); border-color: var(--accent); }
+.year-dropdown-menu {
+  display: none; position: absolute; top: 100%; right: 0;
+  padding-top: 0.4rem; z-index: 50;
+}
+.year-dropdown.open .year-dropdown-menu { display: block; }
+.year-dropdown-menu-inner {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+  padding: 0.4rem 0; min-width: 130px; max-height: 280px; overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.year-dropdown-menu-inner button {
+  display: block; width: 100%; text-align: left;
+  padding: 0.45rem 1rem; font-size: 0.8rem; letter-spacing: 0.04em;
+  font-family: var(--sans); color: var(--muted); background: none; border: none;
+  cursor: pointer; transition: 0.15s;
+}
+.year-dropdown-menu-inner button:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.year-dropdown-menu-inner button.active { color: var(--accent); font-weight: 500; }
 
 /* Load more */
 .load-more-btn {
@@ -801,10 +819,13 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, catego
     <h1 class="section-heading">${esc(title)}</h1>
     <div class="gallery-filters">
       ${tabHtml}
-      ${years.length > 1 ? `<select class="gallery-year-select" id="yearFilter" onchange="filterByYear(this.value)">
-        <option value="all">Alle år</option>
-        ${yearOptions}
-      </select>` : ''}
+      ${years.length > 1 ? `<div class="year-dropdown" id="yearDropdown">
+        <button class="year-dropdown-toggle" id="yearToggle" onclick="toggleYearDropdown()">Alle år</button>
+        <div class="year-dropdown-menu"><div class="year-dropdown-menu-inner">
+          <button class="active" onclick="selectYear('all',this)">Alle år</button>
+          ${years.map(y => `<button onclick="selectYear('${y}',this)">${y}</button>`).join('\n          ')}
+        </div></div>
+      </div>` : ''}
     </div>
     <div class="gallery-grid" id="galleryGrid">
       ${initialCards}
@@ -863,6 +884,27 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, catego
       shown = BATCH;
       render(getFiltered(), shown);
     };
+
+    window.toggleYearDropdown = function() {
+      var dd = document.getElementById('yearDropdown');
+      dd.classList.toggle('open');
+    };
+
+    window.selectYear = function(year, el) {
+      filterByYear(year);
+      var toggle = document.getElementById('yearToggle');
+      toggle.textContent = year === 'all' ? 'Alle år' : year;
+      toggle.className = 'year-dropdown-toggle' + (year !== 'all' ? ' active' : '');
+      var dd = document.getElementById('yearDropdown');
+      dd.classList.remove('open');
+      dd.querySelectorAll('button').forEach(function(b) { b.classList.remove('active'); });
+      el.classList.add('active');
+    };
+
+    document.addEventListener('click', function(e) {
+      var dd = document.getElementById('yearDropdown');
+      if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+    });
   })();
   </script>
 </body>
