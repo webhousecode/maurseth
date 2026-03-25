@@ -257,9 +257,14 @@ img { max-width: 100%; display: block; }
 .gallery-tab:hover { color: var(--text); border-color: var(--text); }
 .gallery-tab.active { color: var(--accent); border-color: var(--accent); background: rgba(184,134,11,0.05); }
 .gallery-year-select {
-  padding: 0.4rem 0.75rem; font-size: 0.8rem; border: 1px solid var(--border);
-  border-radius: 3px; background: transparent; color: var(--text); font-family: var(--sans);
+  padding: 0.4rem 1rem 0.4rem 0.75rem; font-size: 0.8rem; letter-spacing: 0.06em;
+  text-transform: uppercase; border: 1px solid var(--border); border-radius: 3px;
+  background: var(--bg); color: var(--text); font-family: var(--sans);
   cursor: pointer; margin-left: auto;
+  -webkit-appearance: none; -moz-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a8078'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 0.6rem center;
+  padding-right: 1.8rem;
 }
 
 /* Load more */
