@@ -1,0 +1,18 @@
+{
+  "name": "maurseth-gallery",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "migrate": "tsx scripts/migrate.ts",
+    "build": "tsx build.ts",
+    "preview": "npx sirv dist --port 3011 --single"
+  },
+  "dependencies": {
+    "@webhouse/cms": "latest"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

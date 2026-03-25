@@ -1,0 +1,16 @@
+{
+  "slug": "skovens-skulptur",
+  "status": "published",
+  "data": {
+    "title": "Skovens skulptur",
+    "medium": "Olie",
+    "dimensions": "60 x 60",
+    "year": 2023,
+    "image": "media/1922-skovens-skulptur.jpg",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 369
+  },
+  "id": "XAgmFQeINM71QqjpnHYHV",
+  "_fieldMeta": {}
+}

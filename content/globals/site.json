@@ -1,0 +1,21 @@
+{
+  "slug": "site",
+  "status": "published",
+  "data": {
+    "siteName": "Maurseth",
+    "artistName": "Grethe Mariann Maurseth",
+    "artistTitle": "Billedkunstner",
+    "email": "grethe@maurseth.dk",
+    "phone": "+45 22 95 22 27",
+    "studioAddress": "Dannebrogsgade 41b, baghuset\n9000 Aalborg",
+    "postAddress": "Hasserisvej 148\n9000 Aalborg",
+    "instagramUrl": "https://www.instagram.com/grethe_maurseth/",
+    "facebookUrl": "https://www.facebook.com/GretheMariannMaurseth",
+    "heroImage": "",
+    "logoImage": "",
+    "footerText": "© Grethe Mariann Maurseth. Alle rettigheder forbeholdes.",
+    "metaDescription": "Grethe Mariann Maurseth — billedkunstner i Aalborg. Akrylmalerier, grafik og collager."
+  },
+  "id": "CoF9Aflttzq2OGeMzKMce",
+  "_fieldMeta": {}
+}

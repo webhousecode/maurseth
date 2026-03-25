@@ -1,0 +1,16 @@
+{
+  "slug": "blaa-blomst",
+  "status": "published",
+  "data": {
+    "title": "\"Blå blomst\"",
+    "medium": "Olie",
+    "dimensions": "30 x 30",
+    "year": 2023,
+    "image": "media/1820-blaa-blomst.jpg",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 420
+  },
+  "id": "NXsmJgyzGAKAEXi_gX3io",
+  "_fieldMeta": {}
+}

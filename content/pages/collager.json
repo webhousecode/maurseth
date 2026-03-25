@@ -1,0 +1,18 @@
+{
+  "slug": "collager",
+  "status": "published",
+  "data": {
+    "title": "Collager",
+    "metaDescription": "",
+    "sections": [
+      {
+        "_block": "artwork-grid",
+        "heading": "Collager",
+        "category": "collager",
+        "maxItems": 0
+      }
+    ]
+  },
+  "id": "1P61RVv10iq55CWYmg-gi",
+  "_fieldMeta": {}
+}

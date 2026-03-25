@@ -1,0 +1,16 @@
+{
+  "slug": "heksen",
+  "status": "published",
+  "data": {
+    "title": "heksen",
+    "medium": "Olie",
+    "dimensions": "70 x 70",
+    "year": 2023,
+    "image": "media/1880-heksen-olie-70-x-70.jpg",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 395
+  },
+  "id": "9HQbc_9ypFd5oYTLS_zti",
+  "_fieldMeta": {}
+}

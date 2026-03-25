@@ -1,0 +1,7 @@
+node_modules/
+dist/
+deploy/
+.cms/
+_data/
+_revisions/
+.DS_Store

@@ -1,0 +1,16 @@
+{
+  "slug": "foto",
+  "status": "published",
+  "data": {
+    "title": "foto",
+    "medium": "",
+    "dimensions": "",
+    "year": 2022,
+    "image": "media/1694-foto.jpg",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 481
+  },
+  "id": "4eFqgrRUS8glKde9p2aDe",
+  "_fieldMeta": {}
+}

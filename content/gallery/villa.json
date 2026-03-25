@@ -1,0 +1,16 @@
+{
+  "slug": "villa",
+  "status": "published",
+  "data": {
+    "title": "villa",
+    "medium": "",
+    "dimensions": "",
+    "year": 2022,
+    "image": "media/940-villa.png",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 885
+  },
+  "id": "ihNOH0VZXPLFBJTCW2vh8",
+  "_fieldMeta": {}
+}

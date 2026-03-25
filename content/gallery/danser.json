@@ -1,0 +1,16 @@
+{
+  "slug": "danser",
+  "status": "published",
+  "data": {
+    "title": "Danser",
+    "medium": "Olie",
+    "dimensions": "40 x 40",
+    "year": 2022,
+    "image": "media/1035-danser-olie-40-x-40.jpg",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 824
+  },
+  "id": "4T91c0dPPvZWsuVUFVHO-",
+  "_fieldMeta": {}
+}

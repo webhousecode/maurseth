@@ -1,0 +1,17 @@
+{
+  "slug": "nyheder",
+  "status": "published",
+  "data": {
+    "title": "Nyheder",
+    "metaDescription": "Denne blog skal fungere som formidlingssted, der fortæller om dagligdagen og nyheder.",
+    "sections": [
+      {
+        "_block": "text-section",
+        "heading": "Nyheder",
+        "content": "Denne blog skal fungere som formidlingssted, der fortæller om dagligdagen og nyheder."
+      }
+    ]
+  },
+  "id": "9jGYo0NxBH0-DT9V9Sa4A",
+  "_fieldMeta": {}
+}

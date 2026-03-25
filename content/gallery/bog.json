@@ -1,0 +1,16 @@
+{
+  "slug": "bog",
+  "status": "published",
+  "data": {
+    "title": "bog",
+    "medium": "",
+    "dimensions": "",
+    "year": 2026,
+    "image": "media/2808-bog.jpeg",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 11
+  },
+  "id": "pwSPVJYeOGK-wWTWHKcBd",
+  "_fieldMeta": {}
+}

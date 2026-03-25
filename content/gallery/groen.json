@@ -1,0 +1,16 @@
+{
+  "slug": "groen",
+  "status": "published",
+  "data": {
+    "title": "grøn",
+    "medium": "",
+    "dimensions": "",
+    "year": 2022,
+    "image": "media/953-groen.png",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 875
+  },
+  "id": "CbZTflyArJtLnuX9JlyMf",
+  "_fieldMeta": {}
+}

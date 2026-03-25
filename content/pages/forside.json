@@ -1,0 +1,24 @@
+{
+  "slug": "forside",
+  "status": "published",
+  "data": {
+    "title": "Forside",
+    "metaDescription": "",
+    "sections": [
+      {
+        "_block": "hero",
+        "image": "",
+        "title": "Grethe Mariann Maurseth",
+        "subtitle": "Billedkunstner"
+      },
+      {
+        "_block": "artwork-grid",
+        "heading": "Udvalgte værker",
+        "category": "all",
+        "maxItems": 6
+      }
+    ]
+  },
+  "id": "NmMGQ5agV8bYAlArFfQ9p",
+  "_fieldMeta": {}
+}

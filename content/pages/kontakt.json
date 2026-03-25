@@ -1,0 +1,24 @@
+{
+  "slug": "kontakt",
+  "status": "published",
+  "data": {
+    "title": "Kontakt",
+    "metaDescription": "Post adresse : Hasserisvej 148 9000 Aalborg",
+    "sections": [
+      {
+        "_block": "contact-info",
+        "heading": "Kontakt",
+        "address": "Dannebrogsgade 41b, baghuset\n9000 Aalborg",
+        "email": "grethe@maurseth.dk",
+        "phone": "+45 22 95 22 27"
+      },
+      {
+        "_block": "text-section",
+        "heading": "",
+        "content": "Post adresse :\n\nHasserisvej 148\n\n9000 Aalborg"
+      }
+    ]
+  },
+  "id": "o--iwT7U0CkIKLYZerozm",
+  "_fieldMeta": {}
+}

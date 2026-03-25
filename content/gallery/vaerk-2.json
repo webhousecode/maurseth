@@ -1,0 +1,16 @@
+{
+  "slug": "vaerk-2",
+  "status": "published",
+  "data": {
+    "title": "Værk 2",
+    "medium": "",
+    "dimensions": "",
+    "year": 2025,
+    "image": "media/2673-vaerk-2.png",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 89
+  },
+  "id": "OiRCK1lo4VCdwt2SpJz4G",
+  "_fieldMeta": {}
+}

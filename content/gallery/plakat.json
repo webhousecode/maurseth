@@ -1,0 +1,16 @@
+{
+  "slug": "plakat",
+  "status": "published",
+  "data": {
+    "title": "PLAKAT",
+    "medium": "",
+    "dimensions": "",
+    "year": 2022,
+    "image": "media/1060-plakat.jpg",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 807
+  },
+  "id": "kKNoHmywRPwS3L1EVHs7-",
+  "_fieldMeta": {}
+}

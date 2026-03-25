@@ -1,0 +1,16 @@
+{
+  "slug": "bra",
+  "status": "published",
+  "data": {
+    "title": "\"Bra\"",
+    "medium": "Olie",
+    "dimensions": "70 x 70",
+    "year": 2023,
+    "image": "media/1940-bra.jpg",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 358
+  },
+  "id": "hrDRFb06qhC49HvgdqXDS",
+  "_fieldMeta": {}
+}

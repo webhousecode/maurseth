@@ -1,0 +1,16 @@
+{
+  "slug": "my-view",
+  "status": "published",
+  "data": {
+    "title": "My view -",
+    "medium": "Akryl",
+    "dimensions": "60 x 70",
+    "year": 2022,
+    "image": "media/1052-my-view-til-web.jpg",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 808
+  },
+  "id": "6pZXAs8ULGpLsIUjcTEO6",
+  "_fieldMeta": {}
+}

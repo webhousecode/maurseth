@@ -1,0 +1,16 @@
+{
+  "slug": "sommerudstilling",
+  "status": "published",
+  "data": {
+    "title": "Sommerudstilling",
+    "medium": "Collage",
+    "dimensions": "",
+    "year": 2025,
+    "image": "media/2620-sommerudstilling.jpg",
+    "sold": false,
+    "category": "collager",
+    "sortOrder": 119
+  },
+  "id": "gGfsujVFufKeZALFgbhek",
+  "_fieldMeta": {}
+}

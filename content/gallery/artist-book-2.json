@@ -1,0 +1,16 @@
+{
+  "slug": "artist-book-2",
+  "status": "published",
+  "data": {
+    "title": "artist book 2",
+    "medium": "",
+    "dimensions": "",
+    "year": 2025,
+    "image": "media/2688-artist-book-2.jpg",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 74
+  },
+  "id": "oWqiJlG16QegklP7j8u4t",
+  "_fieldMeta": {}
+}

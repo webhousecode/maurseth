@@ -1,0 +1,16 @@
+{
+  "slug": "elvira",
+  "status": "published",
+  "data": {
+    "title": "Elvira",
+    "medium": "Akryl",
+    "dimensions": "60 x 120",
+    "year": 2026,
+    "image": "media/2751-elvira-akryl-60-x-120.jpg",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 53
+  },
+  "id": "PtqwJHuvSdBmuMWNABE2Y",
+  "_fieldMeta": {}
+}

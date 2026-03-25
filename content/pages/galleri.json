@@ -1,0 +1,24 @@
+{
+  "slug": "galleri",
+  "status": "published",
+  "data": {
+    "title": "Galleri",
+    "metaDescription": "",
+    "sections": [
+      {
+        "_block": "artwork-grid",
+        "heading": "Værker",
+        "category": "vaerker",
+        "maxItems": 0
+      },
+      {
+        "_block": "artwork-grid",
+        "heading": "Grafik",
+        "category": "grafik",
+        "maxItems": 0
+      }
+    ]
+  },
+  "id": "LQvlwA6-k8gntmmmVhCJg",
+  "_fieldMeta": {}
+}

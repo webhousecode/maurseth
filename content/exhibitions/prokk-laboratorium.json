@@ -1,0 +1,17 @@
+{
+  "slug": "prokk-laboratorium",
+  "status": "published",
+  "data": {
+    "title": "PROKK Laboratorium",
+    "year": 2022,
+    "venue": "",
+    "location": "",
+    "description": "tekst her",
+    "featuredImage": "media/1067-plakat-labratorium.jpg",
+    "startDate": "2022-01-31",
+    "endDate": "",
+    "category": "udstilling"
+  },
+  "id": "eASAq2AflbQyftixHTzGs",
+  "_fieldMeta": {}
+}

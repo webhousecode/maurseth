@@ -1,0 +1,16 @@
+{
+  "slug": "ovation",
+  "status": "published",
+  "data": {
+    "title": "Ovation",
+    "medium": "",
+    "dimensions": "",
+    "year": 2025,
+    "image": "media/2540-ovation.jpg",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 141
+  },
+  "id": "gLRj4eNaNzHID-NbQMZnr",
+  "_fieldMeta": {}
+}

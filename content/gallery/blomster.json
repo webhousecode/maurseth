@@ -1,0 +1,16 @@
+{
+  "slug": "blomster",
+  "status": "published",
+  "data": {
+    "title": "blomster",
+    "medium": "",
+    "dimensions": "",
+    "year": 2022,
+    "image": "media/1594-blomster.jpg",
+    "sold": false,
+    "category": "vaerker",
+    "sortOrder": 532
+  },
+  "id": "NV5ZDIXeuZdKkt0gRe_rT",
+  "_fieldMeta": {}
+}
