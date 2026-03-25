@@ -499,7 +499,7 @@ function nav(globals: Globals, active?: string): string {
   return `
 <nav class="nav">
   <div class="nav-inner">
-    <a href="${BASE}/" class="nav-logo">${esc(globals.artistName)}<span>${esc(globals.artistTitle)}</span></a>
+    <a href="${BASE}/" class="nav-logo">${globals.logoImage ? `<img src="${BASE}/${globals.logoImage}" alt="${esc(globals.artistName)}" style="height:28px;" />` : `${esc(globals.artistName)}<span>${esc(globals.artistTitle)}</span>`}</a>
     <div class="nav-links">
       <a href="${BASE}/" class="${active === 'forside' ? 'active' : ''}">Forside</a>
       <div class="nav-dropdown">
