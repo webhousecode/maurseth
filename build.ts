@@ -1167,7 +1167,7 @@ function buildPostsIndex(posts: Doc<Post>[], globals: Globals): string {
 </html>`;
 }
 
-function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals): string {
+function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, defaultCat = 'all'): string {
   const BATCH = 24;
   const sorted = [...gallery].sort((a, b) => (a.data.sortOrder || 0) - (b.data.sortOrder || 0));
 
@@ -1185,8 +1185,9 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals): strin
     category: g.data.category || 'vaerker',
   }));
 
-  // First batch HTML (SEO fallback)
-  const initialCards = sorted.slice(0, BATCH).map(g => {
+  // First batch HTML (SEO fallback) — filtered by default category
+  const initialFiltered = defaultCat === 'all' ? sorted : sorted.filter(g => g.data.category === defaultCat);
+  const initialCards = initialFiltered.slice(0, BATCH).map(g => {
     const imgSrc = g.data.image ? `${BASE}/${g.data.image}` : '';
     const meta = [g.data.medium, g.data.dimensions].filter(Boolean).join(' · ');
     return `
@@ -1205,10 +1206,10 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals): strin
   <div class="section" style="margin-top:60px;">
     <h1 class="section-heading">Galleri</h1>
     <div class="gallery-filters">
-      <button class="gallery-tab active" onclick="selectCat('all',this)">Alle</button>
-      <button class="gallery-tab" onclick="selectCat('vaerker',this)">Værker</button>
-      <button class="gallery-tab" onclick="selectCat('grafik',this)">Grafik</button>
-      <button class="gallery-tab" onclick="selectCat('collager',this)">Collager</button>
+      <button class="gallery-tab${defaultCat === 'all' ? ' active' : ''}" onclick="selectCat('all',this)">Alle</button>
+      <button class="gallery-tab${defaultCat === 'vaerker' ? ' active' : ''}" onclick="selectCat('vaerker',this)">Værker</button>
+      <button class="gallery-tab${defaultCat === 'grafik' ? ' active' : ''}" onclick="selectCat('grafik',this)">Grafik</button>
+      <button class="gallery-tab${defaultCat === 'collager' ? ' active' : ''}" onclick="selectCat('collager',this)">Collager</button>
       <div class="year-dropdown" id="yearDropdown">
         <button class="year-dropdown-toggle" id="yearToggle" onclick="toggleYearDropdown()">Alle år</button>
         <div class="year-dropdown-menu"><div class="year-dropdown-menu-inner">
@@ -1217,11 +1218,11 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals): strin
         </div></div>
       </div>
     </div>
-    <div id="galleryCount" style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem;">${sorted.length} værker</div>
+    <div id="galleryCount" style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem;">${initialFiltered.length} værker</div>
     <div class="gallery-grid" id="galleryGrid">
       ${initialCards}
     </div>
-    ${sorted.length > BATCH ? `<button class="load-more-btn" id="loadMoreBtn" onclick="loadMore()">Vis flere (${sorted.length - BATCH} tilbage)</button>` : ''}
+    ${initialFiltered.length > BATCH ? `<button class="load-more-btn" id="loadMoreBtn" onclick="loadMore()">Vis flere (${initialFiltered.length - BATCH} tilbage)</button>` : ''}
   </div>
   ${footer(globals)}
   <script>
@@ -1231,7 +1232,7 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals): strin
     var shown = ${BATCH};
     var BATCH = ${BATCH};
     var currentYear = 'all';
-    var currentCat = 'all';
+    var currentCat = '${defaultCat}';
     var grid = document.getElementById('galleryGrid');
     var btn = document.getElementById('loadMoreBtn');
     var countEl = document.getElementById('galleryCount');
@@ -1375,15 +1376,16 @@ function build() {
     writeFile(outPath, buildPage(page, globals, gallery, exhibitions, activeMap[page.slug]));
   }
 
-  // Gallery index (single page with JS category + year filters)
-  writeFile(join(DIST, 'galleri', 'index.html'), buildGalleryIndex(gallery, globals));
-  // Keep sub-routes pointing to same page for nav dropdown links
-  writeFile(join(DIST, 'galleri', 'vaerker', 'index.html'), buildGalleryIndex(gallery, globals));
-  writeFile(join(DIST, 'galleri', 'grafik', 'index.html'), buildGalleryIndex(gallery, globals));
-  writeFile(join(DIST, 'galleri', 'collager', 'index.html'), buildGalleryIndex(gallery, globals));
+  // Gallery: /galleri/ redirects to /galleri/vaerker/
+  writeFile(join(DIST, 'galleri', 'index.html'), `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=${BASE}/galleri/vaerker/"></head></html>`);
+  // Each sub-route gets the full gallery page with that category pre-selected
+  writeFile(join(DIST, 'galleri', 'vaerker', 'index.html'), buildGalleryIndex(gallery, globals, 'vaerker'));
+  writeFile(join(DIST, 'galleri', 'grafik', 'index.html'), buildGalleryIndex(gallery, globals, 'grafik'));
+  writeFile(join(DIST, 'galleri', 'collager', 'index.html'), buildGalleryIndex(gallery, globals, 'collager'));
 
-  // Gallery detail pages
+  // Gallery detail pages (skip empty slugs)
   for (const item of gallery) {
+    if (!item.slug) { console.warn(`  ⚠ Skipping gallery item with empty slug: ${item.data.title}`); continue; }
     writeFile(join(DIST, 'galleri', item.slug, 'index.html'), buildGalleryDetail(item, globals));
   }
   console.log(`  ${gallery.length} gallery detail pages`);
