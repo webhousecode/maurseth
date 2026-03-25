@@ -211,6 +211,7 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.02em; color: var(--text);
 }
 .nav-logo span { font-weight: 300; color: var(--muted); font-size: 0.9rem; margin-left: 0.5rem; }
+.nav-logo-img { height: 36px; width: auto; }
 .nav-links { display: flex; gap: 1.75rem; list-style: none; }
 .nav-links a {
   color: var(--muted); font-size: 0.8125rem; font-weight: 500;
@@ -577,7 +578,7 @@ function nav(globals: Globals, active?: string): string {
   return `
 <nav class="nav">
   <div class="nav-inner">
-    <a href="${BASE}/" class="nav-logo">${globals.logoImage ? `<img src="${BASE}/${globals.logoImage}" alt="${esc(globals.artistName)}" style="height:28px;" />` : `${esc(globals.artistName)}<span>${esc(globals.artistTitle)}</span>`}</a>
+    <a href="${BASE}/" class="nav-logo">${globals.logoImage ? `<img src="${BASE}/${globals.logoImage}" alt="${esc(globals.artistName)}" class="nav-logo-img" />` : `${esc(globals.artistName)}<span>${esc(globals.artistTitle)}</span>`}</a>
     <div class="nav-links">
       <a href="${BASE}/" class="${active === 'forside' ? 'active' : ''}">Forside</a>
       <div class="nav-dropdown">
