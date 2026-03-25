@@ -226,19 +226,23 @@ img { max-width: 100%; display: block; }
 .nav-dropdown { position: relative; }
 .nav-dropdown > a::after { content: ' \\25BE'; font-size: 0.65em; }
 .nav-dropdown-menu {
-  display: none; position: absolute; top: calc(100% + 0.75rem); left: -0.75rem;
+  display: none; position: absolute; top: 100%; left: -0.75rem;
+  padding-top: 0.5rem;
+  z-index: 110;
+}
+.nav-dropdown-menu-inner {
   background: rgba(250,248,245,0.97); backdrop-filter: blur(12px);
   border: 1px solid var(--border); border-radius: 6px;
-  padding: 0.5rem 0; min-width: 160px; z-index: 110;
+  padding: 0.5rem 0; min-width: 160px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 }
 .nav-dropdown:hover .nav-dropdown-menu { display: block; }
-.nav-dropdown-menu a {
+.nav-dropdown-menu-inner a {
   display: block; padding: 0.5rem 1.25rem; font-size: 0.8125rem;
   color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em;
   border-bottom: none !important;
 }
-.nav-dropdown-menu a:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.nav-dropdown-menu-inner a:hover { color: var(--text); background: rgba(0,0,0,0.03); }
 
 /* Gallery filters */
 .gallery-filters {
@@ -445,11 +449,11 @@ function nav(globals: Globals, active?: string): string {
       <a href="${BASE}/" class="${active === 'forside' ? 'active' : ''}">Forside</a>
       <div class="nav-dropdown">
         <a href="${BASE}/galleri/" class="${active === 'galleri' ? 'active' : ''}">Galleri</a>
-        <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-menu"><div class="nav-dropdown-menu-inner">
           <a href="${BASE}/galleri/vaerker/">Værker</a>
           <a href="${BASE}/galleri/grafik/">Grafik</a>
           <a href="${BASE}/galleri/collager/">Collager</a>
-        </div>
+        </div></div>
       </div>
       <a href="${BASE}/udstillinger/" class="${active === 'udstillinger' ? 'active' : ''}">Udstillinger</a>
       <a href="${BASE}/profil/" class="${active === 'profil' ? 'active' : ''}">Profil</a>
