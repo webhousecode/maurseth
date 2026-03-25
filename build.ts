@@ -395,10 +395,42 @@ img { max-width: 100%; display: block; }
 }
 
 /* ---- Exhibition list ---- */
-.exhibition-year { font-family: var(--serif); font-size: 1.75rem; font-weight: 300; margin-top: 3rem; margin-bottom: 1rem; color: var(--accent); }
-.exhibition-item { padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
-.exhibition-item h3 { font-size: 1rem; font-weight: 500; }
-.exhibition-item .venue { font-size: 0.875rem; color: var(--muted); }
+.exhibition-year-heading { font-family: var(--serif); font-size: 2rem; font-weight: 300; margin-top: 3.5rem; margin-bottom: 1.5rem; color: var(--accent); padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+.exhibition-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+.exhibition-card {
+  display: block; text-decoration: none; color: inherit;
+  border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.exhibition-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.exhibition-card-img {
+  width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block;
+  background: #f0ede8;
+}
+.exhibition-card-body { padding: 1.25rem; }
+.exhibition-card-body h3 { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; line-height: 1.4; margin-bottom: 0.4rem; }
+.exhibition-card-body .ex-meta { font-size: 0.8rem; color: var(--muted); }
+.exhibition-card-body .ex-excerpt { font-size: 0.875rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.6; }
+
+/* Exhibition detail */
+.ex-detail-hero { width: 100%; max-height: 500px; object-fit: cover; display: block; }
+.ex-detail-header { max-width: 800px; margin: 0 auto; padding: 3rem 2rem 1rem; }
+.ex-detail-header h1 { font-family: var(--serif); font-size: 2.5rem; font-weight: 300; line-height: 1.2; }
+.ex-detail-meta { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem; font-size: 0.85rem; color: var(--muted); }
+.ex-detail-meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+/* Recent exhibitions grid */
+.recent-exhibitions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.recent-ex-card { display: block; text-decoration: none; color: inherit; }
+.recent-ex-card img { width: 100%; aspect-ratio: 3/2; object-fit: cover; border-radius: 4px; transition: opacity 0.3s; }
+.recent-ex-card:hover img { opacity: 0.8; }
+.recent-ex-card h4 { font-size: 0.85rem; font-weight: 500; margin-top: 0.5rem; line-height: 1.4; }
+.recent-ex-card .ex-meta { font-size: 0.75rem; color: var(--muted); }
+
+@media (max-width: 768px) {
+  .exhibition-cards { grid-template-columns: 1fr; }
+  .recent-exhibitions { grid-template-columns: repeat(2, 1fr); }
+}
 
 /* ---- Posts ---- */
 .post-card {
@@ -621,12 +653,24 @@ function renderExhibitionList(block: Section, exhibitions: Doc<Exhibition>[]): s
 
   const html = sortedYears.map(year => {
     const exs = byYear.get(year)!;
-    const list = exs.map(e => `
-      <div class="exhibition-item">
-        <h3>${esc(e.data.title)}</h3>
-        ${e.data.venue ? `<div class="venue">${esc(e.data.venue)}${e.data.location ? `, ${esc(e.data.location)}` : ''}</div>` : ''}
-      </div>`).join('\n');
-    return `<h3 class="exhibition-year">${year || 'Ukendt år'}</h3>\n${list}`;
+    const cards = exs.map(e => {
+      const img = e.data.featuredImage;
+      const imgSrc = img ? (img.startsWith('http') ? img : `${BASE}/${img}`) : '';
+      // Extract first ~100 chars of description as excerpt
+      const rawExcerpt = (e.data.description || '').replace(/!\[.*?\]\(.*?\)/g, '').replace(/[#*_\[\]]/g, '').trim();
+      const excerpt = rawExcerpt.slice(0, 120) + (rawExcerpt.length > 120 ? '…' : '');
+      const venue = [e.data.venue, e.data.location].filter(Boolean).join(', ');
+      return `
+      <a class="exhibition-card" href="${BASE}/udstillinger/${e.slug}/">
+        ${imgSrc ? `<img class="exhibition-card-img" src="${esc(imgSrc)}" alt="${esc(e.data.title)}" loading="lazy" />` : ''}
+        <div class="exhibition-card-body">
+          <h3>${esc(e.data.title)}</h3>
+          <div class="ex-meta">${year}${venue ? ` · ${esc(venue)}` : ''}</div>
+          ${excerpt ? `<p class="ex-excerpt">${esc(excerpt)}</p>` : ''}
+        </div>
+      </a>`;
+    }).join('\n');
+    return `<h3 class="exhibition-year-heading">${year || 'Ukendt år'}</h3>\n<div class="exhibition-cards">${cards}</div>`;
   }).join('\n');
 
   return `
@@ -690,6 +734,104 @@ function buildPage(page: Doc<PageData>, globals: Globals, gallery: Doc<GalleryIt
 <body>
   ${nav(globals, active)}
   ${renderSections(sections, globals, gallery, exhibitions)}
+  ${footer(globals)}
+</body>
+</html>`;
+}
+
+function buildExhibitionDetail(ex: Doc<Exhibition>, globals: Globals, allExhibitions: Doc<Exhibition>[]): string {
+  const d = ex.data;
+  const imgSrc = d.featuredImage ? (d.featuredImage.startsWith('http') ? d.featuredImage : `${BASE}/${d.featuredImage}`) : '';
+
+  // Recent exhibitions (6, excluding current)
+  const recent = allExhibitions
+    .filter(e => e.slug !== ex.slug && e.data.featuredImage)
+    .sort((a, b) => (b.data.year || 0) - (a.data.year || 0))
+    .slice(0, 6);
+
+  const recentHtml = recent.length > 0 ? `
+  <section class="section">
+    <h2 class="section-heading">Seneste udstillinger</h2>
+    <div class="section-divider"></div>
+    <div class="recent-exhibitions">
+      ${recent.map(r => {
+        const rImg = r.data.featuredImage ? (r.data.featuredImage.startsWith('http') ? r.data.featuredImage : `${BASE}/${r.data.featuredImage}`) : '';
+        return `
+      <a class="recent-ex-card" href="${BASE}/udstillinger/${r.slug}/">
+        ${rImg ? `<img src="${esc(rImg)}" alt="${esc(r.data.title)}" loading="lazy" />` : ''}
+        <h4>${esc(r.data.title)}</h4>
+        <span class="ex-meta">${r.data.year || ''}</span>
+      </a>`;
+      }).join('\n')}
+    </div>
+  </section>` : '';
+
+  return `${head(d.title, globals)}
+<body>
+  ${nav(globals, 'udstillinger')}
+  <div style="margin-top:60px;">
+    ${imgSrc ? `<img class="ex-detail-hero" src="${esc(imgSrc)}" alt="${esc(d.title)}" />` : ''}
+  </div>
+  <div class="ex-detail-header">
+    <h1>${esc(d.title)}</h1>
+    <div class="ex-detail-meta">
+      ${d.year ? `<span>${d.year}</span>` : ''}
+      ${d.venue ? `<span>${esc(d.venue)}</span>` : ''}
+      ${d.location ? `<span>${esc(d.location)}</span>` : ''}
+      ${d.startDate ? `<span>${formatDate(d.startDate)}</span>` : ''}
+    </div>
+  </div>
+  ${d.description ? `<div class="section-narrow"><div class="prose">${markdownToHtml(d.description)}</div></div>` : ''}
+  ${recentHtml}
+  <div class="section-narrow" style="padding-top:0;">
+    <a href="${BASE}/udstillinger/" style="color:var(--accent);">&larr; Alle udstillinger</a>
+  </div>
+  ${footer(globals)}
+</body>
+</html>`;
+}
+
+function buildExhibitionsIndex(exhibitions: Doc<Exhibition>[], globals: Globals): string {
+  const sorted = [...exhibitions].sort((a, b) => (b.data.year || 0) - (a.data.year || 0));
+
+  // Group by year
+  const byYear = new Map<number, Doc<Exhibition>[]>();
+  for (const ex of sorted) {
+    const y = ex.data.year || 0;
+    if (!byYear.has(y)) byYear.set(y, []);
+    byYear.get(y)!.push(ex);
+  }
+  const years = [...byYear.keys()].sort((a, b) => b - a);
+
+  const html = years.map(year => {
+    const exs = byYear.get(year)!;
+    const cards = exs.map(e => {
+      const img = e.data.featuredImage;
+      const imgSrc = img ? (img.startsWith('http') ? img : `${BASE}/${img}`) : '';
+      const rawExcerpt = (e.data.description || '').replace(/!\[.*?\]\(.*?\)/g, '').replace(/[#*_\[\]]/g, '').trim();
+      const excerpt = rawExcerpt.slice(0, 120) + (rawExcerpt.length > 120 ? '…' : '');
+      const venue = [e.data.venue, e.data.location].filter(Boolean).join(', ');
+      return `
+      <a class="exhibition-card" href="${BASE}/udstillinger/${e.slug}/">
+        ${imgSrc ? `<img class="exhibition-card-img" src="${esc(imgSrc)}" alt="${esc(e.data.title)}" loading="lazy" />` : ''}
+        <div class="exhibition-card-body">
+          <h3>${esc(e.data.title)}</h3>
+          <div class="ex-meta">${year}${venue ? ` · ${esc(venue)}` : ''}</div>
+          ${excerpt ? `<p class="ex-excerpt">${esc(excerpt)}</p>` : ''}
+        </div>
+      </a>`;
+    }).join('\n');
+    return `<h3 class="exhibition-year-heading">${year || 'Ukendt år'}</h3>\n<div class="exhibition-cards">${cards}</div>`;
+  }).join('\n');
+
+  return `${head('Udstillinger', globals)}
+<body>
+  ${nav(globals, 'udstillinger')}
+  <div class="section" style="margin-top:60px;">
+    <h1 class="section-heading">Udstillinger</h1>
+    <div class="section-divider"></div>
+    ${html}
+  </div>
   ${footer(globals)}
 </body>
 </html>`;
@@ -992,13 +1134,16 @@ function build() {
   }
   console.log(`  ${posts.length} post pages`);
 
-  // Exhibition pages (handled via page sections, but also build standalone)
-  const exPage = pages.find(p => p.slug === 'udstillinger');
-  if (exPage) {
-    writeFile(join(DIST, 'udstillinger', 'index.html'), buildPage(exPage, globals, gallery, exhibitions, 'udstillinger'));
-  }
+  // Exhibition index
+  writeFile(join(DIST, 'udstillinger', 'index.html'), buildExhibitionsIndex(exhibitions, globals));
 
-  const totalPages = pages.length + gallery.length + posts.length + 4; // +4 for gallery category pages
+  // Exhibition detail pages
+  for (const ex of exhibitions) {
+    writeFile(join(DIST, 'udstillinger', ex.slug, 'index.html'), buildExhibitionDetail(ex, globals, exhibitions));
+  }
+  console.log(`  ${exhibitions.length} exhibition detail pages`);
+
+  const totalPages = pages.length + gallery.length + posts.length + exhibitions.length + 4;
   console.log(`\n✅ Done! ${totalPages} pages → ${DIST.replace(ROOT + '/', '')}/`);
 }
 
