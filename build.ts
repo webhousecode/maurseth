@@ -824,15 +824,56 @@ function buildExhibitionsIndex(exhibitions: Doc<Exhibition>[], globals: Globals)
     return `<h3 class="exhibition-year-heading">${year || 'Ukendt år'}</h3>\n<div class="exhibition-cards">${cards}</div>`;
   }).join('\n');
 
+  const yearButtons = years.map(y => `<button onclick="filterExYear('${y}',this)">${y}</button>`).join('\n          ');
+
   return `${head('Udstillinger', globals)}
 <body>
   ${nav(globals, 'udstillinger')}
   <div class="section" style="margin-top:60px;">
     <h1 class="section-heading">Udstillinger</h1>
-    <div class="section-divider"></div>
+    <div class="gallery-filters">
+      <div class="year-dropdown" id="exYearDropdown">
+        <button class="year-dropdown-toggle" id="exYearToggle" onclick="toggleExYearDropdown()">Alle år</button>
+        <div class="year-dropdown-menu"><div class="year-dropdown-menu-inner">
+          <button class="active" onclick="filterExYear('all',this)">Alle år</button>
+          ${yearButtons}
+        </div></div>
+      </div>
+    </div>
+    <div id="exContent">
     ${html}
+    </div>
   </div>
   ${footer(globals)}
+  <script>
+  (function(){
+    var sections = document.querySelectorAll('#exContent > h3, #exContent > .exhibition-cards');
+    window.toggleExYearDropdown = function() {
+      document.getElementById('exYearDropdown').classList.toggle('open');
+    };
+    window.filterExYear = function(year, el) {
+      var toggle = document.getElementById('exYearToggle');
+      toggle.textContent = year === 'all' ? 'Alle år' : year;
+      toggle.className = 'year-dropdown-toggle' + (year !== 'all' ? ' active' : '');
+      document.getElementById('exYearDropdown').classList.remove('open');
+      document.getElementById('exYearDropdown').querySelectorAll('.year-dropdown-menu-inner button').forEach(function(b){b.classList.remove('active');});
+      el.classList.add('active');
+      sections.forEach(function(s) {
+        if (year === 'all') { s.style.display = ''; return; }
+        if (s.tagName === 'H3') {
+          s.style.display = s.textContent.trim() === year ? '' : 'none';
+        } else {
+          var prev = s.previousElementSibling;
+          s.style.display = (prev && prev.textContent.trim() === year) ? '' : 'none';
+        }
+      });
+    };
+    document.addEventListener('click', function(e) {
+      var dd = document.getElementById('exYearDropdown');
+      if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+    });
+  })();
+  </script>
 </body>
 </html>`;
 }
