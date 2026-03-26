@@ -564,6 +564,23 @@ img { max-width: 100%; display: block; }
   .gallery-grid { grid-template-columns: 1fr; }
   .hero { height: 60vh; }
 }
+
+/* ---- Cookie consent ---- */
+.cookie-banner {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  background: var(--bg-dark); color: var(--text-light); padding: 1.25rem 2rem;
+  display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+  font-size: 0.85rem; box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+}
+.cookie-banner p { color: rgba(245,240,235,0.7); max-width: 600px; }
+.cookie-banner a { color: #ED155B; text-decoration: underline; }
+.cookie-btn {
+  padding: 0.5rem 1.5rem; border: none; border-radius: 3px; cursor: pointer;
+  font-size: 0.8rem; font-weight: 500; letter-spacing: 0.04em; font-family: var(--sans);
+}
+.cookie-btn-accept { background: #ED155B; color: #fff; }
+.cookie-btn-accept:hover { opacity: 0.9; }
+@media (max-width: 768px) { .cookie-banner { flex-direction: column; text-align: center; } }
 `;
 
 // ---------------------------------------------------------------------------
@@ -648,7 +665,12 @@ function footer(globals: Globals): string {
   <div class="footer-bottom">
     <p>${esc(globals.footerText)}</p>
   </div>
-</footer>`;
+</footer>
+<div class="cookie-banner" id="cookieBanner" style="display:none;">
+  <p>Denne hjemmeside bruger cookies til at forbedre din oplevelse. Ved at fortsætte accepterer du brugen af cookies.</p>
+  <button class="cookie-btn cookie-btn-accept" onclick="document.getElementById('cookieBanner').style.display='none';localStorage.setItem('cookies-accepted','1')">Accepter</button>
+</div>
+<script>if(!localStorage.getItem('cookies-accepted'))document.getElementById('cookieBanner').style.display='flex';</script>`;
 }
 
 // ---------------------------------------------------------------------------
@@ -1085,6 +1107,11 @@ function buildExhibitionsIndex(exhibitions: Doc<Exhibition>[], globals: Globals)
   ${nav(globals, 'udstillinger')}
   <div class="section" style="margin-top:60px;">
     <h1 class="section-heading">Udstillinger</h1>
+    <div class="section-divider"></div>
+    <div class="prose" style="max-width:700px;margin-bottom:2.5rem;font-size:0.95rem;">
+      <p>Jeg har udstillet min kunst siden 2005 og har i l&oslash;bet af mere end tyve &aring;r opbygget en bred udstillingshistorik med b&aring;de solo- og gruppeudstillinger i Danmark, Norge og Island. Mine udstillinger har fundet sted i kunstforeninger, gallerier, museer og kunstcentre.</p>
+      <p>Jeg er altid &aring;ben for nye udstillingsmuligheder. Er du kurator, galleriindehaver eller repr&aelig;senterer en kunstforening? <a href="${BASE}/kontakt/">Kontakt mig</a> &mdash; jeg dr&oslash;fter gerne muligheder for samarbejde.</p>
+    </div>
     <div class="gallery-filters">
       <div class="year-dropdown" id="exYearDropdown">
         <button class="year-dropdown-toggle" id="exYearToggle" onclick="toggleExYearDropdown()">Alle år</button>
@@ -1286,7 +1313,11 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, defaul
         </div></div>
       </div>
     </div>
-    <div id="galleryCount" style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem;">${initialFiltered.length} værker</div>
+    <div class="prose" style="max-width:700px;margin-bottom:2.5rem;font-size:0.95rem;">
+      <p>Velkommen til mit galleri, hvor du kan se et udvalg af mine v&aelig;rker fra de seneste mange &aring;r. Som billedkunstner i Aalborg arbejder jeg p&aring; tv&aelig;rs af flere udtryksformer &mdash; fra akrylmaleri og oliemaleri til grafik og collage. Klik p&aring; et v&aelig;rk for at se det i st&oslash;rre format med oplysninger om titel, st&oslash;rrelse og medium.</p>
+      <p>St&oslash;rstedelen af mine v&aelig;rker kan opleves og k&oslash;bes direkte fra mit <a href="${BASE}/atelier/">atelier i Aalborg</a>. <a href="${BASE}/kontakt/">Kontakt mig</a> for sp&oslash;rgsm&aring;l eller bes&oslash;g.</p>
+    </div>
+    <div id="galleryCount" style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem;">${initialFiltered.length} v&aelig;rker</div>
     <div class="gallery-grid" id="galleryGrid">
       ${initialCards}
     </div>
