@@ -726,7 +726,7 @@ function footer(globals: Globals): string {
       <p><a href="${BASE}/for-tiden/">For tiden</a></p>
       <p><a href="${BASE}/kontakt/">Kontakt</a></p>
       <p><a href="${BASE}/tags/">Tags</a></p>
-      <p><a href="${BASE}/siteoversigt/">Siteoversigt</a></p>
+      <p><a href="${BASE}/siteoversigt/">Oversigt</a></p>
     </div>
   </div>
   <div class="footer-bottom">
@@ -1439,11 +1439,11 @@ function buildSiteIndex(pages: Doc<PageData>[], posts: Doc<Post>[], exhibitions:
   const exItems = [...exhibitions].sort((a, b) => (b.data.year || 0) - (a.data.year || 0)).map(e => ({ title: e.data.title, href: `${BASE}/udstillinger/${e.slug}/`, meta: e.data.year ? String(e.data.year) : '' }));
   const galItems = gallery.slice(0, 100).map(g => ({ title: g.data.title, href: `${BASE}/galleri/${g.slug}/`, meta: [g.data.medium, g.data.dimensions].filter(Boolean).join(' · ') }));
 
-  return `${head('Siteoversigt', globals, 'Komplet oversigt over alle sider på maurseth.dk')}
+  return `${head('Oversigt', globals, 'Komplet oversigt over alle sider på maurseth.dk')}
 <body>
   ${nav(globals)}
   <div class="section page-top">
-    <h1 class="section-heading">Siteoversigt</h1>
+    <h1 class="section-heading">Oversigt</h1>
     <div class="section-divider"></div>
     <p style="color:var(--muted);margin-bottom:1rem;">${pageItems.length + postItems.length + exItems.length + gallery.length} sider i alt</p>
     <div style="max-width:800px;">
