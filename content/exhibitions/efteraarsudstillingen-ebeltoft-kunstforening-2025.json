@@ -9,9 +9,19 @@
     "description": "![Efterårsudstillingen Glæde Ebeltoft Kunstforening. Gruppeudstilling](/uploads/2663-glaede-2.jpg)Efterårsudstillingen\nGlæde\nEbeltoft Kunstforening, en medlemsudstilling -25\n![\"Joy\" Collage i glas og ramme](/uploads/2664-joy-paa-papir.jpg)\"Joy\"\nCollage i glas og ramme",
     "featuredImage": "",
     "startDate": "2025-10-30",
-    "endDate": "",
-    "category": "udstilling"
+    "endDate": "2026-03-26",
+    "category": "udstilling",
+    "tags": [
+      "ebeltoft"
+    ],
+    "_lastEditedBy": {
+      "userId": "fb4eda6a-bc5c-4dec-8cb6-c77c9fb74cd9",
+      "name": "Christian Broberg",
+      "email": "cb@webhouse.dk",
+      "at": "2026-03-26T11:52:17.662Z"
+    }
   },
   "id": "dqqqRE57rqPpw1wChw8zY",
-  "_fieldMeta": {}
+  "_fieldMeta": {},
+  "updatedAt": "2026-03-26T11:52:17.664Z"
 }

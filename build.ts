@@ -1352,19 +1352,20 @@ function buildForTiden(page: Doc<PageData>, posts: Doc<Post>[], globals: Globals
 function buildTagsIndex(posts: Doc<Post>[], exhibitions: Doc<Exhibition>[], gallery: Doc<GalleryItem>[], pages: Doc<PageData>[], globals: Globals): string {
   const tagMap = collectAllTags(posts, exhibitions, gallery, pages);
   const sortedTags = [...tagMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  const totalDocs = posts.length + exhibitions.length + gallery.length + pages.length;
 
   const pills = sortedTags.map(([tag, count]) =>
     `<a class="tag-pill" href="${BASE}/tags/${encodeURIComponent(tag)}/">#${esc(tag)}<span class="tag-count">${count}</span></a>`
   ).join('\n');
 
-  return `${head('Tags', globals, 'Udforsk emner og tags på tværs af alle nyheder.')}
+  return `${head('Tags', globals, 'Udforsk emner og tags på tværs af alle sider.')}
 <body>
   ${nav(globals)}
   <div class="section page-top">
     <p style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#ED155B;margin-bottom:0.5rem;">Alle tags</p>
     <h1 class="section-heading">Udforsk emner</h1>
     <div class="section-divider"></div>
-    <p style="color:var(--muted);margin-bottom:2.5rem;">${sortedTags.length} tags p&aring; tv&aelig;rs af ${posts.length} nyheder</p>
+    <p style="color:var(--muted);margin-bottom:2.5rem;">${sortedTags.length} tags p&aring; tv&aelig;rs af ${totalDocs} sider</p>
     <div class="tags-cloud">
       ${pills}
     </div>

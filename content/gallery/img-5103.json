@@ -2,15 +2,25 @@
   "slug": "img-5103",
   "status": "published",
   "data": {
-    "title": "IMG_5103",
+    "title": "IMG_5103 - omdøb mig",
     "medium": "Collage",
     "dimensions": "",
     "year": 2025,
     "image": "uploads/2632-img-5103.jpeg",
     "sold": false,
     "category": "collager",
-    "sortOrder": 108
+    "sortOrder": 108,
+    "tags": [
+      "smil"
+    ],
+    "_lastEditedBy": {
+      "userId": "fb4eda6a-bc5c-4dec-8cb6-c77c9fb74cd9",
+      "name": "Christian Broberg",
+      "email": "cb@webhouse.dk",
+      "at": "2026-03-26T11:58:37.719Z"
+    }
   },
   "id": "tnBUV4OYIbSk02TrZk5-F",
-  "_fieldMeta": {}
+  "_fieldMeta": {},
+  "updatedAt": "2026-03-26T11:58:37.792Z"
 }
