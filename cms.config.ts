@@ -81,7 +81,7 @@ export default defineConfig({
   collections: [
     defineCollection({
       name: 'globals',
-      label: 'Siteindstillinger',
+      label: 'Globalt',
       fields: [
         { name: 'siteName', type: 'text', label: 'Sitenavn', required: true },
         { name: 'artistName', type: 'text', label: 'Kunstnernavn' },
