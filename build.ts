@@ -699,13 +699,15 @@ function renderTagPills(tags: string[]): string {
   return `<div class="tag-pills">${tags.map(t => `<a class="tag-pill" href="${BASE}/tags/${encodeURIComponent(t)}/">#${esc(t)}</a>`).join('')}</div>`;
 }
 
-function collectAllTags(posts: Doc<Post>[]): Map<string, number> {
+function collectAllTags(...collections: Doc<any>[][]): Map<string, number> {
   const tagCount = new Map<string, number>();
-  for (const p of posts) {
-    const tags = p.data.tags;
-    if (Array.isArray(tags)) {
-      for (const t of tags) {
-        tagCount.set(t, (tagCount.get(t) ?? 0) + 1);
+  for (const docs of collections) {
+    for (const d of docs) {
+      const tags = d.data.tags;
+      if (Array.isArray(tags)) {
+        for (const t of tags) {
+          tagCount.set(t, (tagCount.get(t) ?? 0) + 1);
+        }
       }
     }
   }
@@ -1097,6 +1099,7 @@ function buildExhibitionDetail(ex: Doc<Exhibition>, globals: Globals, allExhibit
     </div>
   </div>
   ${d.description ? `<div class="section-narrow"><div class="prose">${markdownToHtml(d.description)}</div></div>` : ''}
+  ${(ex.data as any).tags?.length ? `<div class="section-narrow" style="padding-top:0;">${renderTagPills((ex.data as any).tags)}</div>` : ''}
   ${recentHtml}
   <div class="section-narrow" style="padding-top:0;">
     <a href="${BASE}/udstillinger/" style="color:#ED155B;">&larr; Alle udstillinger</a>
@@ -1210,6 +1213,7 @@ function buildGalleryDetail(item: Doc<GalleryItem>, globals: Globals): string {
     <h1 class="section-heading">${esc(d.title)}</h1>
     ${meta ? `<p style="color:var(--muted);font-size:0.9rem;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:1rem;">${esc(meta)}</p>` : ''}
     ${d.sold ? '<p style="color:#ED155B;font-weight:500;">Solgt</p>' : ''}
+    ${(item.data as any).tags?.length ? `<div style="margin-top:1.5rem;">${renderTagPills((item.data as any).tags)}</div>` : ''}
     <p style="margin-top:2rem;"><a href="${BASE}/galleri/" style="color:#ED155B;">&larr; Tilbage til galleriet</a></p>
   </div>
   ${footer(globals)}
@@ -1275,7 +1279,7 @@ function buildForTiden(page: Doc<PageData>, posts: Doc<Post>[], globals: Globals
 }
 
 function buildTagsIndex(posts: Doc<Post>[], globals: Globals): string {
-  const tagMap = collectAllTags(posts);
+  const tagMap = collectAllTags(posts, exhibitions, gallery, pages);
   const sortedTags = [...tagMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
 
   const pills = sortedTags.map(([tag, count]) =>
@@ -1299,20 +1303,38 @@ function buildTagsIndex(posts: Doc<Post>[], globals: Globals): string {
 </html>`;
 }
 
-function buildTagDetail(tag: string, posts: Doc<Post>[], globals: Globals): string {
-  const filtered = posts.filter(p => Array.isArray(p.data.tags) && p.data.tags.includes(tag));
-  const sorted = [...filtered].sort((a, b) => (b.data.date || '').localeCompare(a.data.date || ''));
+function buildTagDetail(tag: string, posts: Doc<Post>[], exhibitions: Doc<Exhibition>[], gallery: Doc<GalleryItem>[], globals: Globals): string {
+  // Collect tagged items from all collections with uniform shape
+  const items: { title: string; image: string; label: string; href: string; date: string }[] = [];
 
-  const cards = sorted.map(p => {
-    const imgSrc = p.data.featuredImage ? (p.data.featuredImage.startsWith('http') ? p.data.featuredImage : `${BASE}/${p.data.featuredImage}`) : '';
-    return `
-    <a class="news-card" href="${BASE}/nyheder/${p.slug}/">
-      ${imgSrc ? `<img src="${esc(imgSrc)}" alt="" loading="lazy" />` : ''}
-      <div class="news-cat">${esc(p.data.category || 'Nyheder')}</div>
-      <h3>${esc(p.data.title)}</h3>
-      <div class="news-date">${formatDate(p.data.date)}</div>
-    </a>`;
-  }).join('\n');
+  for (const p of posts) {
+    if (Array.isArray(p.data.tags) && p.data.tags.includes(tag)) {
+      const img = p.data.featuredImage || '';
+      items.push({ title: p.data.title, image: img.startsWith('http') ? img : img ? `${BASE}/${img}` : '', label: p.data.category || 'Nyheder', href: `${BASE}/nyheder/${p.slug}/`, date: p.data.date || '' });
+    }
+  }
+  for (const e of exhibitions) {
+    if (Array.isArray((e.data as any).tags) && (e.data as any).tags.includes(tag)) {
+      const img = e.data.featuredImage || '';
+      items.push({ title: e.data.title, image: img.startsWith('http') ? img : img ? `${BASE}/${img}` : '', label: 'Udstilling', href: `${BASE}/udstillinger/${e.slug}/`, date: e.data.startDate || '' });
+    }
+  }
+  for (const g of gallery) {
+    if (Array.isArray((g.data as any).tags) && (g.data as any).tags.includes(tag)) {
+      const img = g.data.image || '';
+      items.push({ title: g.data.title, image: img ? `${BASE}/${img}` : '', label: g.data.category || 'Galleri', href: `${BASE}/galleri/${g.slug}/`, date: '' });
+    }
+  }
+
+  items.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+  const cards = items.map(item => `
+    <a class="news-card" href="${item.href}">
+      ${item.image ? `<img src="${esc(item.image)}" alt="" loading="lazy" />` : ''}
+      <div class="news-cat">${esc(item.label)}</div>
+      <h3>${esc(item.title)}</h3>
+      ${item.date ? `<div class="news-date">${formatDate(item.date)}</div>` : ''}
+    </a>`).join('\n');
 
   return `${head('#' + tag, globals)}
 <body>
@@ -1321,7 +1343,7 @@ function buildTagDetail(tag: string, posts: Doc<Post>[], globals: Globals): stri
     <p style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#ED155B;margin-bottom:0.5rem;"><a href="${BASE}/tags/" style="color:#ED155B;">&larr; Alle tags</a></p>
     <h1 class="section-heading">#${esc(tag)}</h1>
     <div class="section-divider"></div>
-    <p style="color:var(--muted);margin-bottom:2.5rem;">${sorted.length} ${sorted.length === 1 ? 'nyhed' : 'nyheder'}</p>
+    <p style="color:var(--muted);margin-bottom:2.5rem;">${items.length} ${items.length === 1 ? 'resultat' : 'resultater'}</p>
     <div class="news-grid">
       ${cards}
     </div>
@@ -1610,9 +1632,9 @@ function build() {
   writeFile(join(DIST, 'tags', 'index.html'), buildTagsIndex(posts, globals));
 
   // Tag detail pages
-  const allTags = collectAllTags(posts);
+  const allTags = collectAllTags(posts, exhibitions, gallery, pages);
   for (const [tag] of allTags) {
-    writeFile(join(DIST, 'tags', encodeURIComponent(tag), 'index.html'), buildTagDetail(tag, posts, globals));
+    writeFile(join(DIST, 'tags', encodeURIComponent(tag), 'index.html'), buildTagDetail(tag, posts, exhibitions, gallery, globals));
   }
   console.log(`  ${allTags.size} tag pages`);
 
