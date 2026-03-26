@@ -679,6 +679,7 @@ function footer(globals: Globals): string {
       <p><a href="${BASE}/udstillinger/">Udstillinger</a></p>
       <p><a href="${BASE}/for-tiden/">For tiden</a></p>
       <p><a href="${BASE}/kontakt/">Kontakt</a></p>
+      <p><a href="${BASE}/tags/">Tags</a></p>
     </div>
   </div>
   <div class="footer-bottom">
