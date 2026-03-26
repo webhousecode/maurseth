@@ -103,6 +103,14 @@ function writeFile(filePath: string, content: string) {
   console.log(`  ${filePath.replace(ROOT + '/', '')}`);
 }
 
+/** Resolve image path — handles absolute URLs, /uploads/ paths, and bare uploads/ paths */
+function imgUrl(src: string): string {
+  if (!src) return '';
+  if (src.startsWith('http')) return src;
+  if (src.startsWith('/')) return `${BASE}${src}`;
+  return `${BASE}/${src}`;
+}
+
 function esc(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
@@ -801,7 +809,7 @@ function renderHero(block: Section, globals: Globals, isHome = false): string {
 
   // Non-home hero (simple centered)
   const img = block.image || globals.heroImage;
-  const imgSrc = img ? (img.startsWith('http') ? img : `${BASE}/${img}`) : '';
+  const imgSrc = img ? (imgUrl(img)) : '';
   return `
 <section class="hero" style="min-height:60vh;">
   ${imgSrc ? `<img class="hero-bg" src="${esc(imgSrc)}" alt="" id="parallax-hero" />` : ''}
@@ -831,7 +839,7 @@ function renderTextSection(block: Section): string {
 }
 
 function renderProfile(block: Section): string {
-  const imgSrc = block.portraitImage ? (block.portraitImage.startsWith('http') ? block.portraitImage : `${BASE}/${block.portraitImage}`) : '';
+  const imgSrc = imgUrl(block.portraitImage);
   return `
 <section class="section">
   ${block.heading ? `<h2 class="section-heading">${esc(block.heading)}</h2><div class="section-divider"></div>` : ''}
@@ -916,7 +924,7 @@ function renderExhibitionList(block: Section, exhibitions: Doc<Exhibition>[]): s
     const exs = byYear.get(year)!;
     const cards = exs.map(e => {
       const img = e.data.featuredImage;
-      const imgSrc = img ? (img.startsWith('http') ? img : `${BASE}/${img}`) : '';
+      const imgSrc = img ? (imgUrl(img)) : '';
       // Extract first ~100 chars of description as excerpt
       const rawExcerpt = (e.data.description || '').replace(/!\[.*?\]\(.*?\)/g, '').replace(/[#*_\[\]]/g, '').trim();
       const excerpt = rawExcerpt.slice(0, 120) + (rawExcerpt.length > 120 ? '…' : '');
@@ -942,7 +950,7 @@ function renderExhibitionList(block: Section, exhibitions: Doc<Exhibition>[]): s
 }
 
 function renderStatement(block: Section): string {
-  const imgSrc = block.image ? (block.image.startsWith('http') ? block.image : `${BASE}/${block.image}`) : '';
+  const imgSrc = imgUrl(block.image);
   return `
 <section class="statement">
   ${imgSrc ? `<img class="statement-bg" src="${esc(imgSrc)}" alt="" />` : ''}
@@ -970,7 +978,7 @@ function renderImageGallery(block: Section): string {
   const images: Array<{url: string; alt: string}> = block.images || [];
   const cards = images.map(img => `
     <div class="gallery-item">
-      <img src="${esc(img.url.startsWith('http') ? img.url : `${BASE}/${img.url}`)}" alt="${esc(img.alt || '')}" loading="lazy" />
+      <img src="${esc(imgUrl(img.url))}" alt="${esc(img.alt || '')}" loading="lazy" />
     </div>`).join('\n');
 
   return `
@@ -1061,7 +1069,7 @@ function buildHome(globals: Globals, gallery: Doc<GalleryItem>[], exhibitions: D
 
   const exCards = recentEx.map(e => {
     const img = e.data.featuredImage;
-    const imgSrc = img.startsWith('http') ? img : `${BASE}/${img}`;
+    const imgSrc = imgUrl(img);
     return `
     <a class="exhibition-card" href="${BASE}/udstillinger/${e.slug}/">
       <img class="exhibition-card-img" src="${esc(imgSrc)}" alt="${esc(e.data.title)}" loading="lazy" />
@@ -1079,7 +1087,7 @@ function buildHome(globals: Globals, gallery: Doc<GalleryItem>[], exhibitions: D
 
   const newsCards = recentPosts.map(p => {
     const img = p.data.featuredImage;
-    const imgSrc = img ? (img.startsWith('http') ? img : `${BASE}/${img}`) : '';
+    const imgSrc = img ? (imgUrl(img)) : '';
     return `
     <a class="news-card" href="${BASE}/nyheder/${p.slug}/">
       ${imgSrc ? `<img src="${esc(imgSrc)}" alt="" loading="lazy" />` : ''}
@@ -1136,7 +1144,7 @@ function buildHome(globals: Globals, gallery: Doc<GalleryItem>[], exhibitions: D
 
 function buildExhibitionDetail(ex: Doc<Exhibition>, globals: Globals, allExhibitions: Doc<Exhibition>[]): string {
   const d = ex.data;
-  const imgSrc = d.featuredImage ? (d.featuredImage.startsWith('http') ? d.featuredImage : `${BASE}/${d.featuredImage}`) : '';
+  const imgSrc = imgUrl(d.featuredImage);
 
   // Recent exhibitions (6, excluding current)
   const recent = allExhibitions
@@ -1150,7 +1158,7 @@ function buildExhibitionDetail(ex: Doc<Exhibition>, globals: Globals, allExhibit
     <div class="section-divider"></div>
     <div class="recent-exhibitions">
       ${recent.map(r => {
-        const rImg = r.data.featuredImage ? (r.data.featuredImage.startsWith('http') ? r.data.featuredImage : `${BASE}/${r.data.featuredImage}`) : '';
+        const rImg = imgUrl(r.data.featuredImage);
         return `
       <a class="recent-ex-card" href="${BASE}/udstillinger/${r.slug}/">
         ${rImg ? `<img src="${esc(rImg)}" alt="${esc(r.data.title)}" loading="lazy" />` : ''}
@@ -1198,7 +1206,7 @@ function buildExhibitionsIndex(exhibitions: Doc<Exhibition>[], globals: Globals,
     const exs = byYear.get(year)!;
     const cards = exs.map(e => {
       const img = e.data.featuredImage;
-      const imgSrc = img ? (img.startsWith('http') ? img : `${BASE}/${img}`) : '';
+      const imgSrc = img ? (imgUrl(img)) : '';
       const rawExcerpt = (e.data.description || '').replace(/!\[.*?\]\(.*?\)/g, '').replace(/[#*_\[\]]/g, '').trim();
       const excerpt = rawExcerpt.slice(0, 120) + (rawExcerpt.length > 120 ? '…' : '');
       const venue = [e.data.venue, e.data.location].filter(Boolean).join(', ');
@@ -1296,7 +1304,7 @@ function buildGalleryDetail(item: Doc<GalleryItem>, globals: Globals): string {
 
 function buildPostPage(post: Doc<Post>, globals: Globals): string {
   const d = post.data;
-  const imgSrc = d.featuredImage ? (d.featuredImage.startsWith('http') ? d.featuredImage : `${BASE}/${d.featuredImage}`) : '';
+  const imgSrc = imgUrl(d.featuredImage);
 
   return `${head(d.title, globals, d.excerpt)}
 <body>
@@ -1323,7 +1331,7 @@ function buildForTiden(page: Doc<PageData>, posts: Doc<Post>[], globals: Globals
 
   const cards = sorted.map(p => {
     const img = p.data.featuredImage;
-    const imgSrc = img ? (img.startsWith('http') ? img : `${BASE}/${img}`) : '';
+    const imgSrc = img ? (imgUrl(img)) : '';
     return `
     <a class="news-card" href="${BASE}/nyheder/${p.slug}/">
       ${imgSrc ? `<img src="${esc(imgSrc)}" alt="" loading="lazy" />` : ''}
@@ -1382,13 +1390,13 @@ function buildTagDetail(tag: string, posts: Doc<Post>[], exhibitions: Doc<Exhibi
   for (const p of posts) {
     if (Array.isArray(p.data.tags) && p.data.tags.includes(tag)) {
       const img = p.data.featuredImage || '';
-      items.push({ title: p.data.title, image: img.startsWith('http') ? img : img ? `${BASE}/${img}` : '', label: p.data.category || 'Nyheder', href: `${BASE}/nyheder/${p.slug}/`, date: p.data.date || '' });
+      items.push({ title: p.data.title, image: imgUrl(img), label: p.data.category || 'Nyheder', href: `${BASE}/nyheder/${p.slug}/`, date: p.data.date || '' });
     }
   }
   for (const e of exhibitions) {
     if (Array.isArray((e.data as any).tags) && (e.data as any).tags.includes(tag)) {
       const img = e.data.featuredImage || '';
-      items.push({ title: e.data.title, image: img.startsWith('http') ? img : img ? `${BASE}/${img}` : '', label: 'Udstilling', href: `${BASE}/udstillinger/${e.slug}/`, date: e.data.startDate || '' });
+      items.push({ title: e.data.title, image: imgUrl(img), label: 'Udstilling', href: `${BASE}/udstillinger/${e.slug}/`, date: e.data.startDate || '' });
     }
   }
   for (const g of gallery) {
@@ -1462,7 +1470,7 @@ function buildSiteIndex(pages: Doc<PageData>[], posts: Doc<Post>[], exhibitions:
 function buildPostsIndex(posts: Doc<Post>[], globals: Globals): string {
   const sorted = [...posts].sort((a, b) => (b.data.date || '').localeCompare(a.data.date || ''));
   const cards = sorted.map(p => {
-    const imgSrc = p.data.featuredImage ? (p.data.featuredImage.startsWith('http') ? p.data.featuredImage : `${BASE}/${p.data.featuredImage}`) : '';
+    const imgSrc = imgUrl(p.data.featuredImage);
     return `
     <a href="${BASE}/nyheder/${p.slug}/" class="post-card">
       ${imgSrc ? `<img src="${esc(imgSrc)}" alt="" loading="lazy" />` : '<div></div>'}
