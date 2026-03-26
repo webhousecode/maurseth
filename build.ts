@@ -790,9 +790,9 @@ function renderHero(block: Section, globals: Globals, isHome = false): string {
 
 function renderTextSection(block: Section): string {
   return `
-<section class="section-narrow">
+<section class="section">
   ${block.heading ? `<h2 class="section-heading">${esc(block.heading)}</h2><div class="section-divider"></div>` : ''}
-  <div class="prose">${markdownToHtml(block.content || '')}</div>
+  <div class="prose" style="max-width:800px;">${markdownToHtml(block.content || '')}</div>
 </section>`;
 }
 
