@@ -160,17 +160,34 @@ function markdownToHtml(md: string): string {
   });
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 
+  // Group lines into paragraphs: consecutive non-empty text lines become one <p> with <br>
   const lines = html.split('\n');
   const result: string[] = [];
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed) { result.push(''); continue; }
-    if (/^<(h[1-4]|ul|ol|li|blockquote|\/ul|\/ol|\/blockquote|img|figure|figcaption)/.test(trimmed)) {
-      result.push(trimmed);
-    } else {
-      result.push(`<p>${trimmed}</p>`);
+  let textBuf: string[] = [];
+
+  function flushText() {
+    if (textBuf.length > 0) {
+      result.push(`<p>${textBuf.join('<br>')}</p>`);
+      textBuf = [];
     }
   }
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) {
+      flushText();
+      result.push('');
+      continue;
+    }
+    if (/^<(h[1-4]|ul|ol|li|blockquote|\/ul|\/ol|\/blockquote|img|figure|figcaption)/.test(trimmed)) {
+      flushText();
+      result.push(trimmed);
+    } else {
+      textBuf.push(trimmed);
+    }
+  }
+  flushText();
+
   return result.filter((l, i, a) => !(l === '' && (i === 0 || i === a.length - 1 || a[i - 1] === ''))).join('\n');
 }
 
