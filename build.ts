@@ -295,10 +295,10 @@ img { max-width: 100%; display: block; }
 .load-more-btn {
   display: block; margin: 3rem auto 0; padding: 0.75rem 2.5rem;
   font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--accent); border: 1px solid var(--accent); border-radius: 3px;
+  color: #ED155B; border: 1px solid #ED155B; border-radius: 3px;
   background: transparent; cursor: pointer; transition: 0.2s; font-family: var(--sans);
 }
-.load-more-btn:hover { background: var(--accent); color: #fff; }
+.load-more-btn:hover { background: #ED155B; color: #fff; }
 
 .nav-hamburger {
   display: none; background: none; border: none; cursor: pointer;
@@ -399,7 +399,7 @@ img { max-width: 100%; display: block; }
 .news-card { display: block; text-decoration: none; color: inherit; }
 .news-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 6px; transition: opacity 0.3s; }
 .news-card:hover img { opacity: 0.85; }
-.news-card .news-cat { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-top: 0.75rem; }
+.news-card .news-cat { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: #ED155B; margin-top: 0.75rem; }
 .news-card h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 400; margin-top: 0.3rem; line-height: 1.4; }
 .news-card .news-date { font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; }
 
@@ -461,8 +461,8 @@ img { max-width: 100%; display: block; }
 .prose h4 { font-size: 1.1rem; font-weight: 600; margin-top: 1.5em; margin-bottom: 0.5em; }
 .prose ul { list-style: disc; padding-left: 1.5em; margin-bottom: 1.5em; }
 .prose li { margin-bottom: 0.4em; }
-.prose blockquote { border-left: 3px solid var(--accent); padding: 0.75em 1.25em; margin: 1.5em 0; font-style: italic; color: var(--muted); }
-.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.prose blockquote { border-left: 3px solid #ED155B; padding: 0.75em 1.25em; margin: 1.5em 0; font-style: italic; color: var(--muted); }
+.prose a { color: #ED155B; text-decoration: underline; text-underline-offset: 2px; }
 .prose img { border-radius: 4px; margin: 1.5em 0; }
 
 /* ---- Profile ---- */
@@ -474,7 +474,7 @@ img { max-width: 100%; display: block; }
 }
 
 /* ---- Exhibition list ---- */
-.exhibition-year-heading { font-family: var(--serif); font-size: 2rem; font-weight: 300; margin-top: 3.5rem; margin-bottom: 1.5rem; color: var(--accent); padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+.exhibition-year-heading { font-family: var(--serif); font-size: 2rem; font-weight: 300; margin-top: 3.5rem; margin-bottom: 1.5rem; color: #ED155B; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
 .exhibition-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
 .exhibition-card {
   display: block; text-decoration: none; color: inherit;
@@ -521,13 +521,13 @@ img { max-width: 100%; display: block; }
 .post-card h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 400; margin-bottom: 0.5rem; }
 .post-card .date { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; }
 .post-card .excerpt { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
-.post-card:hover h3 { color: var(--accent); }
+.post-card:hover h3 { color: #ED155B; }
 
 /* ---- Contact ---- */
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
 .contact-block h3 { font-family: var(--serif); font-size: 1.25rem; margin-bottom: 0.75rem; }
 .contact-block p { color: var(--muted); line-height: 1.8; }
-.contact-block a { color: var(--accent); }
+.contact-block a { color: #ED155B; }
 
 /* ---- Footer ---- */
 .footer {
@@ -1110,7 +1110,7 @@ function buildGalleryDetail(item: Doc<GalleryItem>, globals: Globals): string {
   <div class="section-narrow" style="padding-top:3rem;">
     <h1 class="section-heading">${esc(d.title)}</h1>
     ${meta ? `<p style="color:var(--muted);font-size:0.9rem;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:1rem;">${esc(meta)}</p>` : ''}
-    ${d.sold ? '<p style="color:var(--accent);font-weight:500;">Solgt</p>' : ''}
+    ${d.sold ? '<p style="color:#ED155B;font-weight:500;">Solgt</p>' : ''}
     <p style="margin-top:2rem;"><a href="${BASE}/galleri/" style="color:#ED155B;">&larr; Tilbage til galleriet</a></p>
   </div>
   ${footer(globals)}
