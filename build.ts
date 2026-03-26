@@ -569,6 +569,40 @@ img { max-width: 100%; display: block; }
   .hero { height: 60vh; }
 }
 
+/* ---- Statement section (full-width bg image + text) ---- */
+.statement {
+  position: relative; min-height: 500px; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.statement-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.statement-overlay {
+  position: absolute; inset: 0;
+  background: rgba(26,23,20,0.55);
+}
+.statement-content {
+  position: relative; z-index: 2; max-width: 700px; padding: 4rem 2rem; color: var(--text-light);
+}
+.statement-content h2 {
+  font-size: 0.85rem; font-weight: 600; letter-spacing: 0.15em;
+  text-transform: uppercase; margin-bottom: 1.5rem;
+}
+.statement-content p {
+  font-family: var(--serif); font-size: 1.2rem; font-weight: 300;
+  line-height: 1.7; color: rgba(245,240,235,0.85);
+}
+.statement-ctas { display: flex; justify-content: center; gap: 1rem; margin-top: 2rem; }
+.statement-cta {
+  padding: 0.7rem 2rem; font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; border-radius: 3px;
+  cursor: pointer; transition: 0.3s; font-family: var(--sans); text-decoration: none;
+}
+.statement-cta-primary { background: rgba(255,255,255,0.9); color: var(--bg-dark); border: none; }
+.statement-cta-primary:hover { background: #fff; }
+.statement-cta-secondary { background: transparent; color: var(--text-light); border: 1px solid rgba(255,255,255,0.4); }
+.statement-cta-secondary:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+
 /* ---- Tag pills ---- */
 .tag-pill {
   display: inline-block; padding: 0.25rem 0.75rem; font-size: 0.7rem;
@@ -907,6 +941,23 @@ function renderExhibitionList(block: Section, exhibitions: Doc<Exhibition>[]): s
 </section>`;
 }
 
+function renderStatement(block: Section): string {
+  const imgSrc = block.image ? (block.image.startsWith('http') ? block.image : `${BASE}/${block.image}`) : '';
+  return `
+<section class="statement">
+  ${imgSrc ? `<img class="statement-bg" src="${esc(imgSrc)}" alt="" />` : ''}
+  <div class="statement-overlay"></div>
+  <div class="statement-content">
+    ${block.title ? `<h2>${esc(block.title)}</h2>` : ''}
+    ${block.text ? `<p>${esc(block.text)}</p>` : ''}
+    ${(block.cta1Label || block.cta2Label) ? `<div class="statement-ctas">
+      ${block.cta1Label ? `<a class="statement-cta statement-cta-primary" href="${BASE}${block.cta1Href || '/'}">${esc(block.cta1Label)}</a>` : ''}
+      ${block.cta2Label ? `<a class="statement-cta statement-cta-secondary" href="${BASE}${block.cta2Href || '/'}">${esc(block.cta2Label)}</a>` : ''}
+    </div>` : ''}
+  </div>
+</section>`;
+}
+
 function renderCvSection(block: Section): string {
   return `
 <section class="section">
@@ -942,6 +993,7 @@ function renderSections(sections: Section[], globals: Globals, gallery: Doc<Gall
       case 'contact-info': return renderContactInfo(s);
       case 'artwork-grid': return renderArtworkGrid(s, gallery);
       case 'exhibition-list': return renderExhibitionList(s, exhibitions);
+      case 'statement': return renderStatement(s);
       case 'cv-section': return renderCvSection(s);
       case 'image-gallery': return renderImageGallery(s);
       default:
@@ -984,7 +1036,8 @@ function buildHome(globals: Globals, gallery: Doc<GalleryItem>[], exhibitions: D
     <div class="cg-accent">
       <h2>For Tiden Er Jeg I Diskussion Med Mig Selv</h2>
       <p>Akrylmalerier, grafik og collager fra atelieret i Aalborg</p>
-      <a href="${BASE}/for-tiden/">Læs mere &rarr;</a>
+      <a href="${BASE}/for-tiden/">For tiden &rarr;</a>
+      <a href="${BASE}/udstillinger/" style="margin-top:0.5rem;">Se udstillinger &rarr;</a>
     </div>
     <a href="${BASE}/galleri/" class="cg-tall" style="overflow:hidden;border-radius:8px;">
       <img src="${BASE}/${collageImages[1].file}" alt="${collageImages[1].title}" loading="lazy" />
@@ -1049,6 +1102,19 @@ function buildHome(globals: Globals, gallery: Doc<GalleryItem>[], exhibitions: D
     ${collageHtml}
   </section>
 
+  <section class="statement">
+    <img class="statement-bg" src="${BASE}/uploads/1036-dark-land-akryl-80-x-100.jpg" alt="" />
+    <div class="statement-overlay"></div>
+    <div class="statement-content">
+      <h2>${esc(globals.artistName)} ${esc(globals.artistTitle)}</h2>
+      <p>Med t&aelig;tte b&aring;nd til Vestlandet og r&oslash;dder fra Maurseth p&aring; Hardangervidda, hvor kunstnere har fulgt sl&aelig;gten fra 1800-tallet frem til i dag, er Grethe Maurseths DNA med i hvert maleri.</p>
+      <div class="statement-ctas">
+        <a class="statement-cta statement-cta-primary" href="${BASE}/galleri/vaerker/">Se galleri</a>
+        <a class="statement-cta statement-cta-secondary" href="${BASE}/profil/">Biografi</a>
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <h2 class="section-heading">Aktuelle udstillinger</h2>
     <div class="section-divider"></div>
@@ -1111,7 +1177,7 @@ function buildExhibitionDetail(ex: Doc<Exhibition>, globals: Globals, allExhibit
     </div>
   </div>
   ${d.description ? `<div class="section-narrow"><div class="prose">${markdownToHtml(d.description)}</div></div>` : ''}
-  ${(ex.data as any).tags?.length ? `<div class="section-narrow" style="padding-top:0;">${renderTagPills((ex.data as any).tags)}</div>` : ''}
+  ${(ex.data as any).tags?.length ? `<div class="section" style="padding-top:0;padding-bottom:0;">${renderTagPills((ex.data as any).tags)}</div>` : ''}
   ${recentHtml}
   <div class="section-narrow" style="padding-top:0;">
     <a href="${BASE}/udstillinger/" style="color:#ED155B;">&larr; Alle udstillinger</a>

@@ -69,6 +69,19 @@ export default defineConfig({
       ],
     }),
     defineBlock({
+      name: 'statement',
+      label: 'Statement (baggrundsbillede + tekst)',
+      fields: [
+        { name: 'image', type: 'image', label: 'Baggrundsbillede' },
+        { name: 'title', type: 'text', label: 'Overskrift' },
+        { name: 'text', type: 'textarea', label: 'Tekst' },
+        { name: 'cta1Label', type: 'text', label: 'Knap 1 tekst' },
+        { name: 'cta1Href', type: 'text', label: 'Knap 1 link' },
+        { name: 'cta2Label', type: 'text', label: 'Knap 2 tekst' },
+        { name: 'cta2Href', type: 'text', label: 'Knap 2 link' },
+      ],
+    }),
+    defineBlock({
       name: 'cv-section',
       label: 'CV Sektion',
       fields: [
@@ -110,7 +123,7 @@ export default defineConfig({
         { name: 'tags', type: 'tags', label: 'Tags' },
         { name: 'sections', type: 'blocks', label: 'Sektioner', blocks: [
           'hero', 'text-section', 'image-gallery', 'profile', 'contact-info',
-          'exhibition-list', 'artwork-grid', 'cv-section',
+          'exhibition-list', 'artwork-grid', 'cv-section', 'statement',
         ]},
       ],
     }),
