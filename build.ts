@@ -1278,7 +1278,7 @@ function buildForTiden(page: Doc<PageData>, posts: Doc<Post>[], globals: Globals
 </html>`;
 }
 
-function buildTagsIndex(posts: Doc<Post>[], globals: Globals): string {
+function buildTagsIndex(posts: Doc<Post>[], exhibitions: Doc<Exhibition>[], gallery: Doc<GalleryItem>[], pages: Doc<PageData>[], globals: Globals): string {
   const tagMap = collectAllTags(posts, exhibitions, gallery, pages);
   const sortedTags = [...tagMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
 
@@ -1629,7 +1629,7 @@ function build() {
   console.log(`  ${posts.length} post pages`);
 
   // Tags index page
-  writeFile(join(DIST, 'tags', 'index.html'), buildTagsIndex(posts, globals));
+  writeFile(join(DIST, 'tags', 'index.html'), buildTagsIndex(posts, exhibitions, gallery, pages, globals));
 
   // Tag detail pages
   const allTags = collectAllTags(posts, exhibitions, gallery, pages);
