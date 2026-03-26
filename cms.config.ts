@@ -175,6 +175,7 @@ export default defineConfig({
           { label: 'Collager', value: 'collager' },
         ]},
         { name: 'sortOrder', type: 'number', label: 'Sortering' },
+        { name: 'tags', type: 'tags', label: 'Tags' },
       ],
     }),
   ],
