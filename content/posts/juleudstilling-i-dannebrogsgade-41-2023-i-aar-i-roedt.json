@@ -9,9 +9,17 @@
     "featuredImage": "uploads/1963-jule-udstilling-begivenhed-nyt.jpg",
     "category": "nyheder",
     "tags": [
-      "for-tiden"
-    ]
+      "for-tiden",
+      "jul"
+    ],
+    "_lastEditedBy": {
+      "userId": "fb4eda6a-bc5c-4dec-8cb6-c77c9fb74cd9",
+      "name": "Christian Broberg",
+      "email": "cb@webhouse.dk",
+      "at": "2026-03-26T11:30:59.576Z"
+    }
   },
   "id": "DGContvTOTzofKz8ZuWe7",
-  "_fieldMeta": {}
+  "_fieldMeta": {},
+  "updatedAt": "2026-03-26T11:30:59.577Z"
 }

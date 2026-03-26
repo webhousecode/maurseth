@@ -1597,7 +1597,7 @@ function build() {
   const galleriPage = pages.find(p => p.slug === 'galleri');
   const galleriIntroBlock = galleriPage?.data.sections?.find((s: Section) => s._block === 'text-section');
   const galleriIntro = galleriIntroBlock?.content
-    ? `<div class="prose" style="max-width:700px;margin-bottom:2.5rem;font-size:0.95rem;">${markdownToHtml(galleriIntroBlock.content)}</div>`
+    ? `<div class="prose" style="max-width:700px;margin-bottom:2.5rem;">${markdownToHtml(galleriIntroBlock.content)}</div>`
     : '';
 
   // /galleri/ redirects to /galleri/vaerker/
@@ -1643,7 +1643,7 @@ function build() {
   const exPage = pages.find(p => p.slug === 'udstillinger');
   const exIntroBlock = exPage?.data.sections?.find((s: Section) => s._block === 'text-section');
   const exIntro = exIntroBlock?.content
-    ? `<div class="prose" style="max-width:700px;margin-bottom:2.5rem;font-size:0.95rem;">${markdownToHtml(exIntroBlock.content)}</div>`
+    ? `<div class="prose" style="max-width:700px;margin-bottom:2.5rem;">${markdownToHtml(exIntroBlock.content)}</div>`
     : '';
   writeFile(join(DIST, 'udstillinger', 'index.html'), buildExhibitionsIndex(exhibitions, globals, exIntro));
 

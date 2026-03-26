@@ -9,9 +9,17 @@
     "featuredImage": "uploads/2696-juleudstilling-med-gaest-maurseth-2025-2-2.jpg",
     "category": "nyheder",
     "tags": [
-      "for-tiden"
-    ]
+      "for-tiden",
+      "jul"
+    ],
+    "_lastEditedBy": {
+      "userId": "fb4eda6a-bc5c-4dec-8cb6-c77c9fb74cd9",
+      "name": "Christian Broberg",
+      "email": "cb@webhouse.dk",
+      "at": "2026-03-26T11:31:56.517Z"
+    }
   },
   "id": "btTNAlnY51k3Y1b1UVjQL",
-  "_fieldMeta": {}
+  "_fieldMeta": {},
+  "updatedAt": "2026-03-26T11:31:56.518Z"
 }

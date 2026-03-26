@@ -9,8 +9,18 @@
     "image": "uploads/2696-juleudstilling-med-gaest-maurseth-2025-2-2.jpg",
     "sold": false,
     "category": "vaerker",
-    "sortOrder": 67
+    "sortOrder": 67,
+    "tags": [
+      "jul"
+    ],
+    "_lastEditedBy": {
+      "userId": "fb4eda6a-bc5c-4dec-8cb6-c77c9fb74cd9",
+      "name": "Christian Broberg",
+      "email": "cb@webhouse.dk",
+      "at": "2026-03-26T11:30:43.682Z"
+    }
   },
   "id": "vvZrQ8vKg1Zs1oxZ5koML",
-  "_fieldMeta": {}
+  "_fieldMeta": {},
+  "updatedAt": "2026-03-26T11:30:43.713Z"
 }
