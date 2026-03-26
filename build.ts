@@ -1419,7 +1419,7 @@ function buildTagDetail(tag: string, posts: Doc<Post>[], exhibitions: Doc<Exhibi
   for (const g of gallery) {
     if (Array.isArray((g.data as any).tags) && (g.data as any).tags.includes(tag)) {
       const img = g.data.image || '';
-      items.push({ title: g.data.title, image: img ? `${BASE}/${img}` : '', label: g.data.category || 'Galleri', href: `${BASE}/galleri/${g.slug}/`, date: '' });
+      items.push({ title: g.data.title, image: imgUrl(img), label: g.data.category || 'Galleri', href: `${BASE}/galleri/${g.slug}/`, date: '' });
     }
   }
 
