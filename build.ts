@@ -1692,7 +1692,6 @@ function build() {
   const pageRoutes: Record<string, string> = {
     'forside': '/',
     'galleri': '/galleri/',
-    'collager': '/galleri/collager/',
     'udstillinger': '/udstillinger/',
     'profil': '/profil/',
     'cv': '/cv/',
@@ -1705,7 +1704,6 @@ function build() {
   const activeMap: Record<string, string> = {
     'forside': 'forside',
     'galleri': 'galleri',
-    'collager': 'galleri',
     'udstillinger': 'udstillinger',
     'profil': 'profil',
     'cv': 'profil',
@@ -1724,7 +1722,7 @@ function build() {
     if (page.slug === 'forside') continue; // Built above with custom buildHome
     if (page.slug === 'nyheder') continue; // Built separately with post listing
     if (page.slug === 'for-tiden') continue; // Built separately with posts grid
-    if (page.slug === 'galleri' || page.slug === 'collager') continue; // Built separately with gallery grid
+    if (page.slug === 'galleri') continue; // Built separately with gallery grid
 
     const outPath = join(DIST, route.slice(1), 'index.html');
     writeFile(outPath, buildPage(page, globals, gallery, exhibitions, activeMap[page.slug]));
