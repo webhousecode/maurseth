@@ -3,8 +3,13 @@
   "status": "published",
   "data": {
     "title": "Galleri",
-    "metaDescription": "",
+    "metaDescription": "Udforsk galleriet med akrylmalerier, grafik og collager af billedkunstner Grethe Mariann Maurseth fra Aalborg.",
     "sections": [
+      {
+        "_block": "text-section",
+        "heading": "",
+        "content": "Velkommen til mit galleri, hvor du kan se et udvalg af mine værker fra de seneste mange år. Som billedkunstner i Aalborg arbejder jeg på tværs af flere udtryksformer — fra akrylmaleri og oliemaleri til grafik og collage. Klik på et værk for at se det i større format med oplysninger om titel, størrelse og medium.\n\nStørstedelen af mine værker kan opleves og købes direkte fra mit [atelier i Aalborg](/atelier/). [Kontakt mig](/kontakt/) for spørgsmål eller besøg."
+      },
       {
         "_block": "artwork-grid",
         "heading": "Værker",

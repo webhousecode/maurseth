@@ -3,8 +3,13 @@
   "status": "published",
   "data": {
     "title": "Udstillinger",
-    "metaDescription": "",
+    "metaDescription": "Udstillingshistorik for billedkunstner Grethe Mariann Maurseth — solo- og gruppeudstillinger i Danmark, Norge og Island siden 2005.",
     "sections": [
+      {
+        "_block": "text-section",
+        "heading": "",
+        "content": "Jeg har udstillet min kunst siden 2005 og har i løbet af mere end tyve år opbygget en bred udstillingshistorik med både solo- og gruppeudstillinger i Danmark, Norge og Island. Mine udstillinger har fundet sted i kunstforeninger, gallerier, museer og kunstcentre.\n\nJeg er altid åben for nye udstillingsmuligheder. Er du kurator, galleriindehaver eller repræsenterer en kunstforening? [Kontakt mig](/kontakt/) — jeg drøfter gerne muligheder for samarbejde."
+      },
       {
         "_block": "exhibition-list",
         "heading": "Udstillinger",

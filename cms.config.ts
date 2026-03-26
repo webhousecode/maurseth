@@ -95,6 +95,7 @@ export default defineConfig({
         { name: 'heroImage', type: 'image', label: 'Hero-billede (forside)' },
         { name: 'logoImage', type: 'image', label: 'Logo' },
         { name: 'footerText', type: 'text', label: 'Footer tekst' },
+        { name: 'cookieText', type: 'text', label: 'Cookie-banner tekst' },
         { name: 'metaDescription', type: 'textarea', label: 'Standard meta description' },
       ],
     }),

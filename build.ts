@@ -43,6 +43,7 @@ interface Globals {
   heroImage: string;
   logoImage: string;
   footerText: string;
+  cookieText: string;
   metaDescription: string;
 }
 
@@ -667,7 +668,7 @@ function footer(globals: Globals): string {
   </div>
 </footer>
 <div class="cookie-banner" id="cookieBanner" style="display:none;">
-  <p>Denne hjemmeside bruger cookies til at forbedre din oplevelse. Ved at fortsætte accepterer du brugen af cookies.</p>
+  <p>${esc(globals.cookieText || 'Denne hjemmeside bruger cookies til at forbedre din oplevelse.')}</p>
   <button class="cookie-btn cookie-btn-accept" onclick="document.getElementById('cookieBanner').style.display='none';localStorage.setItem('cookies-accepted','1')">Accepter</button>
 </div>
 <script>if(!localStorage.getItem('cookies-accepted'))document.getElementById('cookieBanner').style.display='flex';</script>`;
@@ -1067,7 +1068,7 @@ function buildExhibitionDetail(ex: Doc<Exhibition>, globals: Globals, allExhibit
 </html>`;
 }
 
-function buildExhibitionsIndex(exhibitions: Doc<Exhibition>[], globals: Globals): string {
+function buildExhibitionsIndex(exhibitions: Doc<Exhibition>[], globals: Globals, introHtml = ''): string {
   const sorted = [...exhibitions].sort((a, b) => (b.data.year || 0) - (a.data.year || 0));
 
   // Group by year
@@ -1108,10 +1109,7 @@ function buildExhibitionsIndex(exhibitions: Doc<Exhibition>[], globals: Globals)
   <div class="section" style="margin-top:60px;">
     <h1 class="section-heading">Udstillinger</h1>
     <div class="section-divider"></div>
-    <div class="prose" style="max-width:700px;margin-bottom:2.5rem;font-size:0.95rem;">
-      <p>Jeg har udstillet min kunst siden 2005 og har i l&oslash;bet af mere end tyve &aring;r opbygget en bred udstillingshistorik med b&aring;de solo- og gruppeudstillinger i Danmark, Norge og Island. Mine udstillinger har fundet sted i kunstforeninger, gallerier, museer og kunstcentre.</p>
-      <p>Jeg er altid &aring;ben for nye udstillingsmuligheder. Er du kurator, galleriindehaver eller repr&aelig;senterer en kunstforening? <a href="${BASE}/kontakt/">Kontakt mig</a> &mdash; jeg dr&oslash;fter gerne muligheder for samarbejde.</p>
-    </div>
+    ${introHtml}
     <div class="gallery-filters">
       <div class="year-dropdown" id="exYearDropdown">
         <button class="year-dropdown-toggle" id="exYearToggle" onclick="toggleExYearDropdown()">Alle år</button>
@@ -1262,7 +1260,7 @@ function buildPostsIndex(posts: Doc<Post>[], globals: Globals): string {
 </html>`;
 }
 
-function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, defaultCat = 'all'): string {
+function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, defaultCat = 'all', introHtml = ''): string {
   const BATCH = 24;
   const sorted = [...gallery].sort((a, b) => (a.data.sortOrder || 0) - (b.data.sortOrder || 0));
 
@@ -1300,6 +1298,8 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, defaul
   ${nav(globals, 'galleri')}
   <div class="section" style="margin-top:60px;">
     <h1 class="section-heading">Galleri</h1>
+    <div class="section-divider"></div>
+    ${introHtml}
     <div class="gallery-filters">
       <button class="gallery-tab${defaultCat === 'all' ? ' active' : ''}" onclick="selectCat('all',this)">Alle</button>
       <button class="gallery-tab${defaultCat === 'vaerker' ? ' active' : ''}" onclick="selectCat('vaerker',this)">Værker</button>
@@ -1312,10 +1312,6 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, defaul
           ${years.map(y => `<button onclick="selectYear('${y}',this)">${y}</button>`).join('\n          ')}
         </div></div>
       </div>
-    </div>
-    <div class="prose" style="max-width:700px;margin-bottom:2.5rem;font-size:0.95rem;">
-      <p>Velkommen til mit galleri, hvor du kan se et udvalg af mine v&aelig;rker fra de seneste mange &aring;r. Som billedkunstner i Aalborg arbejder jeg p&aring; tv&aelig;rs af flere udtryksformer &mdash; fra akrylmaleri og oliemaleri til grafik og collage. Klik p&aring; et v&aelig;rk for at se det i st&oslash;rre format med oplysninger om titel, st&oslash;rrelse og medium.</p>
-      <p>St&oslash;rstedelen af mine v&aelig;rker kan opleves og k&oslash;bes direkte fra mit <a href="${BASE}/atelier/">atelier i Aalborg</a>. <a href="${BASE}/kontakt/">Kontakt mig</a> for sp&oslash;rgsm&aring;l eller bes&oslash;g.</p>
     </div>
     <div id="galleryCount" style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem;">${initialFiltered.length} v&aelig;rker</div>
     <div class="gallery-grid" id="galleryGrid">
@@ -1476,12 +1472,18 @@ function build() {
     writeFile(outPath, buildPage(page, globals, gallery, exhibitions, activeMap[page.slug]));
   }
 
-  // Gallery: /galleri/ redirects to /galleri/vaerker/
+  // Gallery: render intro from CMS page content
+  const galleriPage = pages.find(p => p.slug === 'galleri');
+  const galleriIntroBlock = galleriPage?.data.sections?.find((s: Section) => s._block === 'text-section');
+  const galleriIntro = galleriIntroBlock?.content
+    ? `<div class="prose" style="max-width:700px;margin-bottom:2.5rem;font-size:0.95rem;">${markdownToHtml(galleriIntroBlock.content)}</div>`
+    : '';
+
+  // /galleri/ redirects to /galleri/vaerker/
   writeFile(join(DIST, 'galleri', 'index.html'), `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=${BASE}/galleri/vaerker/"></head></html>`);
-  // Each sub-route gets the full gallery page with that category pre-selected
-  writeFile(join(DIST, 'galleri', 'vaerker', 'index.html'), buildGalleryIndex(gallery, globals, 'vaerker'));
-  writeFile(join(DIST, 'galleri', 'grafik', 'index.html'), buildGalleryIndex(gallery, globals, 'grafik'));
-  writeFile(join(DIST, 'galleri', 'collager', 'index.html'), buildGalleryIndex(gallery, globals, 'collager'));
+  writeFile(join(DIST, 'galleri', 'vaerker', 'index.html'), buildGalleryIndex(gallery, globals, 'vaerker', galleriIntro));
+  writeFile(join(DIST, 'galleri', 'grafik', 'index.html'), buildGalleryIndex(gallery, globals, 'grafik', galleriIntro));
+  writeFile(join(DIST, 'galleri', 'collager', 'index.html'), buildGalleryIndex(gallery, globals, 'collager', galleriIntro));
 
   // Gallery detail pages (skip empty slugs)
   for (const item of gallery) {
@@ -1506,7 +1508,13 @@ function build() {
   console.log(`  ${posts.length} post pages`);
 
   // Exhibition index
-  writeFile(join(DIST, 'udstillinger', 'index.html'), buildExhibitionsIndex(exhibitions, globals));
+  // Exhibition index with intro from CMS page content
+  const exPage = pages.find(p => p.slug === 'udstillinger');
+  const exIntroBlock = exPage?.data.sections?.find((s: Section) => s._block === 'text-section');
+  const exIntro = exIntroBlock?.content
+    ? `<div class="prose" style="max-width:700px;margin-bottom:2.5rem;font-size:0.95rem;">${markdownToHtml(exIntroBlock.content)}</div>`
+    : '';
+  writeFile(join(DIST, 'udstillinger', 'index.html'), buildExhibitionsIndex(exhibitions, globals, exIntro));
 
   // Exhibition detail pages
   for (const ex of exhibitions) {
