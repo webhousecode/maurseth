@@ -531,11 +531,23 @@ img { max-width: 100%; display: block; }
 
 /* ---- Footer ---- */
 .footer {
-  background: var(--bg-dark); color: var(--text-light); padding: 3rem 2rem;
-  text-align: center; font-size: 0.85rem;
+  background: var(--bg-dark); color: var(--text-light); padding: 4rem 2rem 2rem;
+  font-size: 0.85rem;
 }
-.footer a { color: #ED155B; }
-.footer .social { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem; }
+.footer a { color: #ED155B; transition: opacity 0.2s; }
+.footer a:hover { opacity: 0.8; }
+.footer-grid {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2rem;
+}
+.footer-col h4 { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,235,0.5); margin-bottom: 0.75rem; }
+.footer-col p { color: rgba(245,240,235,0.7); line-height: 1.7; margin-bottom: 0.25rem; }
+.footer-col p a { color: #ED155B; }
+.footer-social { display: flex; gap: 0.75rem; margin-top: 0.75rem; }
+.footer-social a { color: rgba(245,240,235,0.5); }
+.footer-social a:hover { color: #ED155B; }
+.footer-bottom { max-width: 1200px; margin: 3rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(245,240,235,0.1); text-align: center; color: rgba(245,240,235,0.4); }
+@media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
 
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
@@ -567,6 +579,7 @@ function head(title: string, globals: Globals, description?: string): string {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>${esc(title)} — ${esc(globals.artistName)}</title>
   ${desc ? `<meta name="description" content="${esc(desc)}" />` : ''}
+  <link rel="icon" type="image/svg+xml" href="${BASE}/uploads/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -589,9 +602,9 @@ function nav(globals: Globals, active?: string): string {
           <a href="${BASE}/galleri/collager/">Collager</a>
         </div></div>
       </div>
-      <a href="${BASE}/udstillinger/" class="${active === 'udstillinger' ? 'active' : ''}">Udstillinger</a>
       <a href="${BASE}/profil/" class="${active === 'profil' ? 'active' : ''}">Profil</a>
-      <a href="${BASE}/nyheder/" class="${active === 'nyheder' ? 'active' : ''}">Nyheder</a>
+      <a href="${BASE}/udstillinger/" class="${active === 'udstillinger' ? 'active' : ''}">Udstillinger</a>
+      <a href="${BASE}/for-tiden/" class="${active === 'for-tiden' ? 'active' : ''}">For tiden</a>
       <a href="${BASE}/kontakt/" class="${active === 'kontakt' ? 'active' : ''}">Kontakt</a>
       ${globals.facebookUrl ? `<a href="${esc(globals.facebookUrl)}" target="_blank" rel="noopener" class="nav-social" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>` : ''}
       ${globals.instagramUrl ? `<a href="${esc(globals.instagramUrl)}" target="_blank" rel="noopener" class="nav-social" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>` : ''}
@@ -606,12 +619,35 @@ function nav(globals: Globals, active?: string): string {
 function footer(globals: Globals): string {
   return `
 <footer class="footer">
-  <div class="social">
-    ${globals.instagramUrl ? `<a href="${esc(globals.instagramUrl)}" target="_blank" rel="noopener">Instagram</a>` : ''}
-    ${globals.facebookUrl ? `<a href="${esc(globals.facebookUrl)}" target="_blank" rel="noopener">Facebook</a>` : ''}
-    ${globals.email ? `<a href="mailto:${esc(globals.email)}">${esc(globals.email)}</a>` : ''}
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>${esc(globals.artistName)}</h4>
+      <p>${esc(globals.artistTitle)}</p>
+      <div class="footer-social">
+        ${globals.instagramUrl ? `<a href="${esc(globals.instagramUrl)}" target="_blank" rel="noopener" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>` : ''}
+        ${globals.facebookUrl ? `<a href="${esc(globals.facebookUrl)}" target="_blank" rel="noopener" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>` : ''}
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Atelier</h4>
+      <p>${(globals.studioAddress || '').replace(/\n/g, '<br>')}</p>
+    </div>
+    <div class="footer-col">
+      <h4>Kontakt</h4>
+      ${globals.email ? `<p><a href="mailto:${esc(globals.email)}">${esc(globals.email)}</a></p>` : ''}
+      ${globals.phone ? `<p><a href="tel:${esc(globals.phone)}">${esc(globals.phone)}</a></p>` : ''}
+    </div>
+    <div class="footer-col">
+      <h4>Sider</h4>
+      <p><a href="${BASE}/galleri/vaerker/">Galleri</a></p>
+      <p><a href="${BASE}/udstillinger/">Udstillinger</a></p>
+      <p><a href="${BASE}/for-tiden/">For tiden</a></p>
+      <p><a href="${BASE}/kontakt/">Kontakt</a></p>
+    </div>
   </div>
-  <p>${esc(globals.footerText)}</p>
+  <div class="footer-bottom">
+    <p>${esc(globals.footerText)}</p>
+  </div>
 </footer>`;
 }
 
@@ -1139,6 +1175,38 @@ function buildPostPage(post: Doc<Post>, globals: Globals): string {
 </html>`;
 }
 
+function buildForTiden(page: Doc<PageData>, posts: Doc<Post>[], globals: Globals): string {
+  const sorted = [...posts].sort((a, b) => (b.data.date || '').localeCompare(a.data.date || ''));
+  const introSection = page.data.sections?.find(s => s._block === 'text-section');
+
+  const cards = sorted.map(p => {
+    const img = p.data.featuredImage;
+    const imgSrc = img ? (img.startsWith('http') ? img : `${BASE}/${img}`) : '';
+    return `
+    <a class="news-card" href="${BASE}/nyheder/${p.slug}/">
+      ${imgSrc ? `<img src="${esc(imgSrc)}" alt="" loading="lazy" />` : ''}
+      <div class="news-cat">${esc(p.data.category || 'Nyheder')}</div>
+      <h3>${esc(p.data.title)}</h3>
+      <div class="news-date">${formatDate(p.data.date)}</div>
+    </a>`;
+  }).join('\n');
+
+  return `${head('For tiden', globals, page.data.metaDescription)}
+<body>
+  ${nav(globals, 'for-tiden')}
+  <div class="section" style="margin-top:60px;">
+    <h1 class="section-heading">For tiden</h1>
+    <div class="section-divider"></div>
+    ${introSection ? `<div class="prose" style="max-width:700px;margin-bottom:3rem;">${markdownToHtml(introSection.content || '')}</div>` : ''}
+    <div class="news-grid">
+      ${cards}
+    </div>
+  </div>
+  ${footer(globals)}
+</body>
+</html>`;
+}
+
 function buildPostsIndex(posts: Doc<Post>[], globals: Globals): string {
   const sorted = [...posts].sort((a, b) => (b.data.date || '').localeCompare(a.data.date || ''));
   const cards = sorted.map(p => {
@@ -1356,7 +1424,7 @@ function build() {
     'udstillinger': 'udstillinger',
     'profil': 'profil',
     'cv': 'profil',
-    'for-tiden': 'forside',
+    'for-tiden': 'for-tiden',
     'kontakt': 'kontakt',
     'atelier': 'kontakt',
     'nyheder': 'nyheder',
@@ -1370,6 +1438,7 @@ function build() {
     if (!route) continue;
     if (page.slug === 'forside') continue; // Built above with custom buildHome
     if (page.slug === 'nyheder') continue; // Built separately with post listing
+    if (page.slug === 'for-tiden') continue; // Built separately with posts grid
     if (page.slug === 'galleri' || page.slug === 'collager') continue; // Built separately with gallery grid
 
     const outPath = join(DIST, route.slice(1), 'index.html');
@@ -1389,6 +1458,12 @@ function build() {
     writeFile(join(DIST, 'galleri', item.slug, 'index.html'), buildGalleryDetail(item, globals));
   }
   console.log(`  ${gallery.length} gallery detail pages`);
+
+  // "For Tiden" page (intro + all posts as cards)
+  const forTidenPage = pages.find(p => p.slug === 'for-tiden');
+  if (forTidenPage) {
+    writeFile(join(DIST, 'for-tiden', 'index.html'), buildForTiden(forTidenPage, posts, globals));
+  }
 
   // News index
   writeFile(join(DIST, 'nyheder', 'index.html'), buildPostsIndex(posts, globals));

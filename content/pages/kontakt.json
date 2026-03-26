@@ -3,11 +3,11 @@
   "status": "published",
   "data": {
     "title": "Kontakt",
-    "metaDescription": "Post adresse : Hasserisvej 148 9000 Aalborg",
+    "metaDescription": "Kontakt billedkunstner Grethe Mariann Maurseth i Aalborg. Atelier i Dannebrogsgade 41b. Åben for henvendelser om udstillinger, salg og samarbejde.",
     "sections": [
       {
         "_block": "contact-info",
-        "heading": "Kontakt",
+        "heading": "Kontakt mig",
         "address": "Dannebrogsgade 41b, baghuset\n9000 Aalborg",
         "email": "grethe@maurseth.dk",
         "phone": "+45 22 95 22 27"
@@ -15,7 +15,7 @@
       {
         "_block": "text-section",
         "heading": "",
-        "content": "Post adresse :\n\nHasserisvej 148\n\n9000 Aalborg"
+        "content": "## Postadresse\n\nHasserisvej 148\n9000 Aalborg\n\n## Åben for henvendelser\n\nJeg er altid åben for henvendelser vedrørende udstillinger, salg af værker, samarbejde eller andre kreative projekter. Du er velkommen til at skrive, ringe eller kigge forbi mit [atelier](/atelier/) efter aftale.\n\nFølg med på [Instagram](https://www.instagram.com/grethe_maurseth/) og [Facebook](https://www.facebook.com/GretheMariannMaurseth) for de seneste nyheder."
       }
     ]
   },
