@@ -316,7 +316,7 @@ img { max-width: 100%; display: block; }
 /* ---- Hero / Split layout ---- */
 .hero {
   position: relative; min-height: 90vh; overflow: hidden;
-  margin-top: 60px;
+  margin-top: 60px; /* fixed nav height */
 }
 .hero-bg {
   position: absolute; inset: -15% 0; height: 130%;
@@ -442,6 +442,9 @@ img { max-width: 100%; display: block; }
   font-size: 0.7rem; font-weight: 400; letter-spacing: 0.1em;
   text-transform: uppercase; color: rgba(255,255,255,0.6); margin-top: 0.4rem;
 }
+
+/* ---- Page top (consistent spacing below fixed nav) ---- */
+.page-top { padding-top: 100px; }
 
 /* ---- Section layout ---- */
 .section { max-width: 1200px; margin: 0 auto; padding: 5rem 2rem; }
@@ -1046,7 +1049,7 @@ function buildExhibitionDetail(ex: Doc<Exhibition>, globals: Globals, allExhibit
   return `${head(d.title, globals)}
 <body>
   ${nav(globals, 'udstillinger')}
-  <div style="margin-top:60px;">
+  <div class="page-top">
     ${imgSrc ? `<img class="ex-detail-hero" src="${esc(imgSrc)}" alt="${esc(d.title)}" />` : ''}
   </div>
   <div class="ex-detail-header">
@@ -1106,7 +1109,7 @@ function buildExhibitionsIndex(exhibitions: Doc<Exhibition>[], globals: Globals,
   return `${head('Udstillinger', globals)}
 <body>
   ${nav(globals, 'udstillinger')}
-  <div class="section" style="margin-top:60px;">
+  <div class="section page-top">
     <h1 class="section-heading">Udstillinger</h1>
     <div class="section-divider"></div>
     ${introHtml}
@@ -1165,7 +1168,7 @@ function buildGalleryDetail(item: Doc<GalleryItem>, globals: Globals): string {
   return `${head(d.title, globals)}
 <body>
   ${nav(globals, 'galleri')}
-  <div style="margin-top: 60px;">
+  <div class="page-top">
     ${imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(d.title)}" style="width:100%;max-height:85vh;object-fit:contain;background:#f0ede8;padding:2rem;" />` : ''}
   </div>
   <div class="section-narrow" style="padding-top:3rem;">
@@ -1186,7 +1189,7 @@ function buildPostPage(post: Doc<Post>, globals: Globals): string {
   return `${head(d.title, globals, d.excerpt)}
 <body>
   ${nav(globals, 'nyheder')}
-  <article style="margin-top:60px;">
+  <article class="page-top">
     ${imgSrc ? `<img src="${esc(imgSrc)}" alt="" style="width:100%;max-height:420px;object-fit:cover;" />` : ''}
     <div class="section-narrow" style="padding-top:3rem;">
       <h1 class="section-heading">${esc(d.title)}</h1>
@@ -1219,7 +1222,7 @@ function buildForTiden(page: Doc<PageData>, posts: Doc<Post>[], globals: Globals
   return `${head('For tiden', globals, page.data.metaDescription)}
 <body>
   ${nav(globals, 'for-tiden')}
-  <div class="section" style="margin-top:60px;">
+  <div class="section page-top">
     <h1 class="section-heading">For tiden</h1>
     <div class="section-divider"></div>
     ${introSection ? `<div class="prose" style="max-width:700px;margin-bottom:3rem;">${markdownToHtml(introSection.content || '')}</div>` : ''}
@@ -1250,7 +1253,7 @@ function buildPostsIndex(posts: Doc<Post>[], globals: Globals): string {
   return `${head('Nyheder', globals)}
 <body>
   ${nav(globals, 'nyheder')}
-  <div class="section" style="margin-top:60px;">
+  <div class="section page-top">
     <h1 class="section-heading">Nyheder</h1>
     <div class="section-divider"></div>
     ${cards}
@@ -1296,7 +1299,7 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, defaul
   return `${head('Galleri', globals)}
 <body>
   ${nav(globals, 'galleri')}
-  <div class="section" style="margin-top:60px;">
+  <div class="section page-top">
     <h1 class="section-heading">Galleri</h1>
     <div class="section-divider"></div>
     ${introHtml}
