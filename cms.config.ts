@@ -119,8 +119,8 @@ export default defineConfig({
       urlPrefix: '/',
       fields: [
         { name: 'title', type: 'text', label: 'Titel', required: true },
-        { name: 'metaDescription', type: 'textarea', label: 'Meta description' },
         { name: 'tags', type: 'tags', label: 'Tags' },
+        { name: 'metaDescription', type: 'textarea', label: 'Meta description' },
         { name: 'sections', type: 'blocks', label: 'Sektioner', blocks: [
           'hero', 'text-section', 'image-gallery', 'profile', 'contact-info',
           'exhibition-list', 'artwork-grid', 'cv-section', 'statement',
@@ -134,6 +134,7 @@ export default defineConfig({
       urlPrefix: '/nyheder',
       fields: [
         { name: 'title', type: 'text', label: 'Titel', required: true },
+        { name: 'tags', type: 'tags', label: 'Tags' },
         { name: 'date', type: 'date', label: 'Dato' },
         { name: 'excerpt', type: 'textarea', label: 'Uddrag' },
         { name: 'content', type: 'richtext', label: 'Indhold' },
@@ -145,7 +146,6 @@ export default defineConfig({
           { label: 'Workshop', value: 'workshop' },
           { label: 'Kursus', value: 'kursus' },
         ]},
-        { name: 'tags', type: 'tags', label: 'Tags' },
       ],
     }),
 
@@ -155,6 +155,7 @@ export default defineConfig({
       urlPrefix: '/udstillinger',
       fields: [
         { name: 'title', type: 'text', label: 'Titel', required: true },
+        { name: 'tags', type: 'tags', label: 'Tags' },
         { name: 'year', type: 'number', label: 'År' },
         { name: 'venue', type: 'text', label: 'Sted' },
         { name: 'location', type: 'text', label: 'By/land' },
@@ -167,7 +168,6 @@ export default defineConfig({
           { label: 'Arrangement', value: 'arrangement' },
           { label: 'Workshop', value: 'workshop' },
         ]},
-        { name: 'tags', type: 'tags', label: 'Tags' },
       ],
     }),
 
@@ -177,6 +177,7 @@ export default defineConfig({
       urlPrefix: '/galleri',
       fields: [
         { name: 'title', type: 'text', label: 'Titel', required: true },
+        { name: 'tags', type: 'tags', label: 'Tags' },
         { name: 'medium', type: 'text', label: 'Medie (akryl, olie, grafik...)' },
         { name: 'dimensions', type: 'text', label: 'Mål (f.eks. 100 x 100)' },
         { name: 'year', type: 'number', label: 'År' },
@@ -188,7 +189,6 @@ export default defineConfig({
           { label: 'Collager', value: 'collager' },
         ]},
         { name: 'sortOrder', type: 'number', label: 'Sortering' },
-        { name: 'tags', type: 'tags', label: 'Tags' },
       ],
     }),
   ],
