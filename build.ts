@@ -942,14 +942,14 @@ function buildHome(globals: Globals, gallery: Doc<GalleryItem>[], exhibitions: D
     <h2 class="section-heading">Aktuelle udstillinger</h2>
     <div class="section-divider"></div>
     <div class="exhibition-cards">${exCards}</div>
-    <p style="margin-top:2rem;"><a href="${BASE}/udstillinger/" style="color:var(--accent);font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;">Se alle udstillinger &rarr;</a></p>
+    <p style="margin-top:2rem;"><a href="${BASE}/udstillinger/" style="color:#ED155B;font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;">Se alle udstillinger &rarr;</a></p>
   </section>
 
   <section class="section">
     <h2 class="section-heading">Nyheder</h2>
     <div class="section-divider"></div>
     <div class="news-grid">${newsCards}</div>
-    <p style="margin-top:2rem;"><a href="${BASE}/nyheder/" style="color:var(--accent);font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;">Alle nyheder &rarr;</a></p>
+    <p style="margin-top:2rem;"><a href="${BASE}/nyheder/" style="color:#ED155B;font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;">Alle nyheder &rarr;</a></p>
   </section>
 
   ${footer(globals)}
@@ -1002,7 +1002,7 @@ function buildExhibitionDetail(ex: Doc<Exhibition>, globals: Globals, allExhibit
   ${d.description ? `<div class="section-narrow"><div class="prose">${markdownToHtml(d.description)}</div></div>` : ''}
   ${recentHtml}
   <div class="section-narrow" style="padding-top:0;">
-    <a href="${BASE}/udstillinger/" style="color:var(--accent);">&larr; Alle udstillinger</a>
+    <a href="${BASE}/udstillinger/" style="color:#ED155B;">&larr; Alle udstillinger</a>
   </div>
   ${footer(globals)}
 </body>
@@ -1111,7 +1111,7 @@ function buildGalleryDetail(item: Doc<GalleryItem>, globals: Globals): string {
     <h1 class="section-heading">${esc(d.title)}</h1>
     ${meta ? `<p style="color:var(--muted);font-size:0.9rem;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:1rem;">${esc(meta)}</p>` : ''}
     ${d.sold ? '<p style="color:var(--accent);font-weight:500;">Solgt</p>' : ''}
-    <p style="margin-top:2rem;"><a href="${BASE}/galleri/" style="color:var(--accent);">&larr; Tilbage til galleriet</a></p>
+    <p style="margin-top:2rem;"><a href="${BASE}/galleri/" style="color:#ED155B;">&larr; Tilbage til galleriet</a></p>
   </div>
   ${footer(globals)}
 </body>
@@ -1131,7 +1131,7 @@ function buildPostPage(post: Doc<Post>, globals: Globals): string {
       <h1 class="section-heading">${esc(d.title)}</h1>
       ${d.date ? `<p style="color:var(--muted);font-size:0.875rem;margin-bottom:2rem;">${formatDate(d.date)}</p>` : ''}
       <div class="prose">${markdownToHtml(d.content)}</div>
-      <p style="margin-top:3rem;"><a href="${BASE}/nyheder/" style="color:var(--accent);">&larr; Alle nyheder</a></p>
+      <p style="margin-top:3rem;"><a href="${BASE}/nyheder/" style="color:#ED155B;">&larr; Alle nyheder</a></p>
     </div>
   </article>
   ${footer(globals)}
