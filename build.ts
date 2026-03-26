@@ -729,8 +729,7 @@ function footer(globals: Globals): string {
     </div>
   </div>
   <div class="footer-bottom">
-    <p>${esc(globals.footerText)}</p>
-    <p style="margin-top:0.5rem;">Crafted by <a href="https://webhouse.dk" target="_blank" rel="noopener">WebHouse</a> · Powered by <a href="https://webhouse.app" target="_blank" rel="noopener">webhouse.app</a></p>
+    <p>${esc(globals.footerText)} · Crafted by <a href="https://webhouse.dk" target="_blank" rel="noopener">WebHouse</a> · Powered by <a href="https://webhouse.app" target="_blank" rel="noopener">webhouse.app</a></p>
   </div>
 </footer>
 <div class="cookie-banner" id="cookieBanner" style="display:none;">
