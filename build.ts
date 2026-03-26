@@ -220,7 +220,7 @@ img { max-width: 100%; display: block; }
   border-bottom: 2px solid transparent;
 }
 .nav-links a:hover, .nav-links a.active {
-  color: var(--text); border-bottom-color: var(--accent);
+  color: var(--text); border-bottom-color: #ED155B;
 }
 .nav-social {
   color: var(--muted); padding: 0.25rem; border-bottom: none !important;
