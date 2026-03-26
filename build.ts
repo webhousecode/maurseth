@@ -534,7 +534,7 @@ img { max-width: 100%; display: block; }
   background: var(--bg-dark); color: var(--text-light); padding: 3rem 2rem;
   text-align: center; font-size: 0.85rem;
 }
-.footer a { color: var(--accent-light); }
+.footer a { color: #ED155B; }
 .footer .social { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem; }
 
 /* ---- Responsive ---- */
