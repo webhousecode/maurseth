@@ -726,6 +726,7 @@ function footer(globals: Globals): string {
       <p><a href="${BASE}/for-tiden/">For tiden</a></p>
       <p><a href="${BASE}/kontakt/">Kontakt</a></p>
       <p><a href="${BASE}/tags/">Tags</a></p>
+      <p><a href="${BASE}/siteoversigt/">Siteoversigt</a></p>
     </div>
   </div>
   <div class="footer-bottom">
@@ -1424,6 +1425,40 @@ function buildTagDetail(tag: string, posts: Doc<Post>[], exhibitions: Doc<Exhibi
 </html>`;
 }
 
+function buildSiteIndex(pages: Doc<PageData>[], posts: Doc<Post>[], exhibitions: Doc<Exhibition>[], gallery: Doc<GalleryItem>[], globals: Globals): string {
+  const section = (title: string, items: { title: string; href: string; meta?: string }[]) => {
+    if (items.length === 0) return '';
+    const list = items.map(i =>
+      `<li><a href="${i.href}">${esc(i.title)}</a>${i.meta ? ` <span style="color:var(--muted);font-size:0.8rem;">${esc(i.meta)}</span>` : ''}</li>`
+    ).join('\n');
+    return `<h2 style="font-family:var(--serif);font-size:1.5rem;font-weight:300;margin-top:2.5rem;margin-bottom:0.75rem;">${esc(title)} <span style="color:var(--muted);font-size:0.9rem;">(${items.length})</span></h2>\n<ul style="list-style:none;padding:0;">${list}</ul>`;
+  };
+
+  const pageItems = pages.map(p => ({ title: p.data.title, href: `${BASE}/${p.slug === 'forside' ? '' : p.slug + '/'}` }));
+  const postItems = [...posts].sort((a, b) => (b.data.date || '').localeCompare(a.data.date || '')).map(p => ({ title: p.data.title, href: `${BASE}/nyheder/${p.slug}/`, meta: p.data.date ? formatDate(p.data.date) : '' }));
+  const exItems = [...exhibitions].sort((a, b) => (b.data.year || 0) - (a.data.year || 0)).map(e => ({ title: e.data.title, href: `${BASE}/udstillinger/${e.slug}/`, meta: e.data.year ? String(e.data.year) : '' }));
+  const galItems = gallery.slice(0, 100).map(g => ({ title: g.data.title, href: `${BASE}/galleri/${g.slug}/`, meta: [g.data.medium, g.data.dimensions].filter(Boolean).join(' · ') }));
+
+  return `${head('Siteoversigt', globals, 'Komplet oversigt over alle sider på maurseth.dk')}
+<body>
+  ${nav(globals)}
+  <div class="section page-top">
+    <h1 class="section-heading">Siteoversigt</h1>
+    <div class="section-divider"></div>
+    <p style="color:var(--muted);margin-bottom:1rem;">${pageItems.length + postItems.length + exItems.length + gallery.length} sider i alt</p>
+    <div style="max-width:800px;">
+      ${section('Sider', pageItems)}
+      ${section('Nyheder', postItems)}
+      ${section('Udstillinger', exItems)}
+      ${section('Galleri' + (gallery.length > 100 ? ' (første 100)' : ''), galItems)}
+    </div>
+    <p style="margin-top:2rem;"><a href="${BASE}/tags/" style="color:#ED155B;">Se alle tags &rarr;</a></p>
+  </div>
+  ${footer(globals)}
+</body>
+</html>`;
+}
+
 function buildPostsIndex(posts: Doc<Post>[], globals: Globals): string {
   const sorted = [...posts].sort((a, b) => (b.data.date || '').localeCompare(a.data.date || ''));
   const cards = sorted.map(p => {
@@ -1698,6 +1733,9 @@ function build() {
     writeFile(join(DIST, 'nyheder', post.slug, 'index.html'), buildPostPage(post, globals));
   }
   console.log(`  ${posts.length} post pages`);
+
+  // Site index
+  writeFile(join(DIST, 'siteoversigt', 'index.html'), buildSiteIndex(pages, posts, exhibitions, gallery, globals));
 
   // Tags index page
   writeFile(join(DIST, 'tags', 'index.html'), buildTagsIndex(posts, exhibitions, gallery, pages, globals));
