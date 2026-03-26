@@ -155,7 +155,7 @@ function markdownToHtml(md: string): string {
   html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
   html = html.replace(/`(.+?)`/g, '<code>$1</code>');
   html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => {
-    const imgSrc = src.startsWith('/uploads/') ? `${BASE}${src}` : src.startsWith('uploads/') ? `${BASE}/${src}` : src;
+    const imgSrc = imgUrl(src);
     return `<img src="${esc(imgSrc)}" alt="${esc(alt)}" loading="lazy" />`;
   });
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
@@ -790,7 +790,7 @@ function collectAllTags(...collections: Doc<any>[][]): Map<string, number> {
 // ---------------------------------------------------------------------------
 
 function renderHero(block: Section, globals: Globals, isHome = false): string {
-  const bgImg = globals.heroImage ? `${BASE}/${globals.heroImage}` : '';
+  const bgImg = imgUrl(globals.heroImage);
   const portraitImg = `${BASE}/uploads/901-grethepenslerr.png`;
 
   if (isHome) {
@@ -896,7 +896,7 @@ function renderArtworkGrid(block: Section, gallery: Doc<GalleryItem>[]): string 
   }
 
   const cards = items.map(g => {
-    const imgSrc = g.data.image ? `${BASE}/${g.data.image}` : '';
+    const imgSrc = imgUrl(g.data.image);
     const meta = [g.data.medium, g.data.dimensions].filter(Boolean).join(' · ');
     return `
     <a class="gallery-item" href="${BASE}/galleri/${g.slug}/">
@@ -1056,7 +1056,7 @@ function buildHome(globals: Globals, gallery: Doc<GalleryItem>[], exhibitions: D
   const collageHtml = `
   <div class="collage-grid">
     <a href="${BASE}/galleri/" class="cg-wide" style="overflow:hidden;border-radius:8px;">
-      <img src="${BASE}/${collageImages[0].file}" alt="${collageImages[0].title}" loading="lazy" />
+      <img src="${imgUrl(collageImages[0].file)}" alt="${collageImages[0].title}" loading="lazy" />
     </a>
     <div class="cg-accent">
       <h2>For Tiden Er Jeg I Diskussion Med Mig Selv</h2>
@@ -1065,16 +1065,16 @@ function buildHome(globals: Globals, gallery: Doc<GalleryItem>[], exhibitions: D
       <a href="${BASE}/udstillinger/" style="margin-top:0.5rem;">Se udstillinger &rarr;</a>
     </div>
     <a href="${BASE}/galleri/" class="cg-tall" style="overflow:hidden;border-radius:8px;">
-      <img src="${BASE}/${collageImages[1].file}" alt="${collageImages[1].title}" loading="lazy" />
+      <img src="${imgUrl(collageImages[1].file)}" alt="${collageImages[1].title}" loading="lazy" />
     </a>
     <a href="${BASE}/galleri/" style="overflow:hidden;border-radius:8px;">
-      <img src="${BASE}/${collageImages[2].file}" alt="${collageImages[2].title}" loading="lazy" />
+      <img src="${imgUrl(collageImages[2].file)}" alt="${collageImages[2].title}" loading="lazy" />
     </a>
     <a href="${BASE}/galleri/" style="overflow:hidden;border-radius:8px;">
-      <img src="${BASE}/${collageImages[3].file}" alt="${collageImages[3].title}" loading="lazy" />
+      <img src="${imgUrl(collageImages[3].file)}" alt="${collageImages[3].title}" loading="lazy" />
     </a>
     <a href="${BASE}/galleri/" style="overflow:hidden;border-radius:8px;">
-      <img src="${BASE}/${collageImages[4].file}" alt="${collageImages[4].title}" loading="lazy" />
+      <img src="${imgUrl(collageImages[4].file)}" alt="${collageImages[4].title}" loading="lazy" />
     </a>
   </div>`;
 
@@ -1298,7 +1298,7 @@ function buildExhibitionsIndex(exhibitions: Doc<Exhibition>[], globals: Globals,
 
 function buildGalleryDetail(item: Doc<GalleryItem>, globals: Globals): string {
   const d = item.data;
-  const imgSrc = d.image ? `${BASE}/${d.image}` : '';
+  const imgSrc = imgUrl(d.image);
   const meta = [d.medium, d.dimensions, d.year ? String(d.year) : ''].filter(Boolean).join(' · ');
 
   return `${head(d.title, globals)}
@@ -1523,7 +1523,7 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, defaul
   const cardData = sorted.map(g => ({
     slug: g.slug,
     title: g.data.title,
-    image: g.data.image ? `${BASE}/${g.data.image}` : '',
+    image: imgUrl(g.data.image),
     medium: g.data.medium || '',
     dimensions: g.data.dimensions || '',
     year: g.data.year || 0,
@@ -1533,7 +1533,7 @@ function buildGalleryIndex(gallery: Doc<GalleryItem>[], globals: Globals, defaul
   // First batch HTML (SEO fallback) — filtered by default category
   const initialFiltered = defaultCat === 'all' ? sorted : sorted.filter(g => g.data.category === defaultCat);
   const initialCards = initialFiltered.slice(0, BATCH).map(g => {
-    const imgSrc = g.data.image ? `${BASE}/${g.data.image}` : '';
+    const imgSrc = imgUrl(g.data.image);
     const meta = [g.data.medium, g.data.dimensions].filter(Boolean).join(' · ');
     return `
     <a class="gallery-item" href="${BASE}/galleri/${g.slug}/">
