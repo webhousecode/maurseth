@@ -1164,23 +1164,18 @@ function buildExhibitionDetail(ex: Doc<Exhibition>, globals: Globals, allExhibit
   return `${head(d.title, globals)}
 <body>
   ${nav(globals, 'udstillinger')}
-  <div class="page-top">
-    ${imgSrc ? `<img class="ex-detail-hero" src="${esc(imgSrc)}" alt="${esc(d.title)}" />` : ''}
-  </div>
-  <div class="ex-detail-header">
-    <h1>${esc(d.title)}</h1>
-    <div class="ex-detail-meta">
+  ${imgSrc ? `<div class="page-top"><img class="ex-detail-hero" src="${esc(imgSrc)}" alt="${esc(d.title)}" /></div>` : ''}
+  <div class="section${imgSrc ? '' : ' page-top'}">
+    <h1 class="section-heading">${esc(d.title)}</h1>
+    <div class="ex-detail-meta" style="margin-bottom:2rem;">
       ${d.year ? `<span>${d.year}</span>` : ''}
       ${d.venue ? `<span>${esc(d.venue)}</span>` : ''}
       ${d.location ? `<span>${esc(d.location)}</span>` : ''}
       ${d.startDate ? `<span>${formatDate(d.startDate)}</span>` : ''}
     </div>
-  </div>
-  ${d.description ? `<div class="section-narrow"><div class="prose">${markdownToHtml(d.description)}</div></div>` : ''}
-  ${(ex.data as any).tags?.length ? `<div class="section" style="padding-top:0;padding-bottom:0;">${renderTagPills((ex.data as any).tags)}</div>` : ''}
-  ${recentHtml}
-  <div class="section-narrow" style="padding-top:0;">
-    <a href="${BASE}/udstillinger/" style="color:#ED155B;">&larr; Alle udstillinger</a>
+    ${d.description ? `<div class="prose" style="max-width:800px;">${markdownToHtml(d.description)}</div>` : ''}
+    ${(ex.data as any).tags?.length ? `<div style="margin-top:2rem;">${renderTagPills((ex.data as any).tags)}</div>` : ''}
+    <p style="margin-top:2rem;"><a href="${BASE}/udstillinger/" style="color:#ED155B;">&larr; Alle udstillinger</a></p>
   </div>
   ${footer(globals)}
 </body>
@@ -1305,16 +1300,14 @@ function buildPostPage(post: Doc<Post>, globals: Globals): string {
 
   return `${head(d.title, globals, d.excerpt)}
 <body>
-  ${nav(globals, 'nyheder')}
-  <article class="page-top">
-    ${imgSrc ? `<img src="${esc(imgSrc)}" alt="" style="width:100%;max-height:420px;object-fit:cover;" />` : ''}
-    <div class="section-narrow" style="padding-top:3rem;">
-      <h1 class="section-heading">${esc(d.title)}</h1>
-      ${d.date ? `<p style="color:var(--muted);font-size:0.875rem;margin-bottom:2rem;">${formatDate(d.date)}</p>` : ''}
-      <div class="prose">${markdownToHtml(d.content)}</div>
-      ${d.tags && d.tags.length > 0 ? `<div style="margin-top:2rem;">${renderTagPills(d.tags)}</div>` : ''}
-      <p style="margin-top:2rem;"><a href="${BASE}/nyheder/" style="color:#ED155B;">&larr; Alle nyheder</a></p>
-    </div>
+  ${nav(globals, 'for-tiden')}
+  ${imgSrc ? `<div class="page-top"><img src="${esc(imgSrc)}" alt="" style="width:100%;max-height:420px;object-fit:cover;" /></div>` : ''}
+  <article class="section${imgSrc ? '' : ' page-top'}">
+    <h1 class="section-heading">${esc(d.title)}</h1>
+    ${d.date ? `<p style="color:var(--muted);font-size:0.875rem;margin-bottom:2rem;">${formatDate(d.date)}</p>` : ''}
+    <div class="prose" style="max-width:800px;">${markdownToHtml(d.content)}</div>
+    ${d.tags && d.tags.length > 0 ? `<div style="margin-top:2rem;">${renderTagPills(d.tags)}</div>` : ''}
+    <p style="margin-top:2rem;"><a href="${BASE}/for-tiden/" style="color:#ED155B;">&larr; For tiden</a></p>
   </article>
   ${footer(globals)}
 </body>
