@@ -107,6 +107,7 @@ export default defineConfig({
       fields: [
         { name: 'title', type: 'text', label: 'Titel', required: true },
         { name: 'metaDescription', type: 'textarea', label: 'Meta description' },
+        { name: 'tags', type: 'tags', label: 'Tags' },
         { name: 'sections', type: 'blocks', label: 'Sektioner', blocks: [
           'hero', 'text-section', 'image-gallery', 'profile', 'contact-info',
           'exhibition-list', 'artwork-grid', 'cv-section',
@@ -153,6 +154,7 @@ export default defineConfig({
           { label: 'Arrangement', value: 'arrangement' },
           { label: 'Workshop', value: 'workshop' },
         ]},
+        { name: 'tags', type: 'tags', label: 'Tags' },
       ],
     }),
 
