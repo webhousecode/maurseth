@@ -3,12 +3,47 @@
   "status": "published",
   "data": {
     "title": "Mit atelier",
-    "metaDescription": "",
+    "metaDescription": "Besøg mit atelier i Aalborg. Oplev mine værker, arrangementer, klangmeditation og kunstnerisk fordybelse. Åbent efter aftale eller ved begivenheder.",
     "sections": [
       {
+        "_block": "hero",
+        "image": "uploads/2558-vaerksted-2024-dannebrogsgaderedgeret.jpg",
+        "title": "Mit Atelier",
+        "subtitle": "Et skabende univers i Aalborg"
+      },
+      {
         "_block": "text-section",
-        "heading": "Mit atelier",
-        "content": ""
+        "heading": "Mit atelier og værksted",
+        "content": "Velkommen til mit atelier — et rum, hvor kreativitet og kunst mødes. Dette er mit værksted, mit studio, min arbejdsplads. Det er her, mine idéer får liv, og hvor hver penselstrøg, hvert maleri og hver farve fortæller en historie.\n\nJeg arbejder med forskellige materialer og medier og trækker både på traditionel og moderne kunstnerisk praksis. Jeg elsker at eksperimentere, udforske nye udtryk og finde nye måder at formidle følelser og tanker gennem mit arbejde.\n\nMit atelier er ikke kun et arbejdssted, men et frirum — et sted hvor idéer kan vokse, og hvor jeg kan fordybe mig i mit håndværk. Jeg håber, at du gennem mine [værker](/galleri/vaerker/) kan få et indblik i min kreative verden, og at de kan vække tanker, følelser og måske også skabe nye."
+      },
+      {
+        "_block": "image-gallery",
+        "heading": "Stemningsbilleder fra hverdagen",
+        "images": [
+          { "url": "uploads/2558-vaerksted-2024-dannebrogsgaderedgeret.jpg", "alt": "Mit atelier og værksted i Dannebrogsgade" },
+          { "url": "uploads/1809-besoeg-vaerksted.jpg", "alt": "Besøg i atelieret" },
+          { "url": "uploads/2566-britta-og-grethe-1.jpg", "alt": "Britta og Grethe i værkstedet" },
+          { "url": "uploads/2248-italian-birthday.jpg", "alt": "Fødselsdag i atelieret med praktikanterne" },
+          { "url": "uploads/2567-242440572-245386264260062-6903376840885980618-n.jpg", "alt": "Arbejder på et kunstværk" },
+          { "url": "uploads/2565-dfs.jpg", "alt": "Besøg i atelieret" },
+          { "url": "uploads/2568-241470996-262364075895614-8802322556389006841-n.jpg", "alt": "Malerier i blå nuancer i udstillingen" },
+          { "url": "uploads/1678-jul-21.jpg", "alt": "Stemningsbillede fra julen" },
+          { "url": "uploads/2563-img-9754.jpg", "alt": "Besøg i udstillingen — te og kunst" },
+          { "url": "uploads/2569-7b5988a1-94d2-47d1-9726-95bb75ed356f.jpeg", "alt": "Læsser kunst til udstilling" },
+          { "url": "uploads/2564-img-6987.jpg", "alt": "Papirklip, saks og lim — materialer i min proces" }
+        ]
+      },
+      {
+        "_block": "text-section",
+        "heading": "Kom og besøg mig",
+        "content": "Mit atelier ligger i Vestbyen i Aalborg og er åbent efter aftale og når skiltet er ude. Jeg har et udstillingsrum, hvor du kan se et udvalg af mine værker.\n\nJeg holder forskellige arrangementer — klangmeditation, fremvisninger for kunstforeninger, ferniseringer, julehygge og meget mere. Hold øje med begivenheder på [Facebook](https://www.facebook.com/GretheMariannMaurseth) eller [kontakt mig](/kontakt/) for at aftale dit næste besøg.\n\n## Adresse\n\n**Dannebrogsgade 41B, baghuset**\n9000 Aalborg\n\nJeg ser frem til dit besøg!"
+      },
+      {
+        "_block": "contact-info",
+        "heading": "Kontakt",
+        "address": "Dannebrogsgade 41B, baghuset\n9000 Aalborg",
+        "email": "grethe@maurseth.dk",
+        "phone": "+45 22 95 22 27"
       }
     ]
   },
