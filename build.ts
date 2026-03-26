@@ -450,7 +450,7 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.02em; margin-bottom: 2rem;
 }
 .section-divider {
-  width: 60px; height: 1px; background: var(--accent); margin-bottom: 3rem;
+  width: 60px; height: 1px; background: #ED155B; margin-bottom: 3rem;
 }
 
 /* ---- Prose (richtext) ---- */
