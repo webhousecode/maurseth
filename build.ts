@@ -569,6 +569,21 @@ img { max-width: 100%; display: block; }
   .hero { height: 60vh; }
 }
 
+/* ---- Tag pills ---- */
+.tag-pill {
+  display: inline-block; padding: 0.25rem 0.75rem; font-size: 0.7rem;
+  letter-spacing: 0.06em; border: 1px solid rgba(237,21,91,0.3);
+  border-radius: 99px; color: #ED155B; background: rgba(237,21,91,0.04);
+  text-decoration: none; transition: 0.2s; font-family: var(--sans);
+}
+.tag-pill:hover { background: rgba(237,21,91,0.1); border-color: #ED155B; }
+.tag-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tag-count { font-size: 0.65rem; color: var(--muted); margin-left: 0.2rem; }
+
+/* Tags page */
+.tags-cloud { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.tags-cloud .tag-pill { font-size: 0.8rem; padding: 0.4rem 1rem; }
+
 /* ---- Cookie consent ---- */
 .cookie-banner {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
@@ -675,6 +690,24 @@ function footer(globals: Globals): string {
   <button class="cookie-btn cookie-btn-accept" onclick="document.getElementById('cookieBanner').style.display='none';localStorage.setItem('cookies-accepted','1')">Accepter</button>
 </div>
 <script>if(!localStorage.getItem('cookies-accepted'))document.getElementById('cookieBanner').style.display='flex';</script>`;
+}
+
+function renderTagPills(tags: string[]): string {
+  if (!tags || tags.length === 0) return '';
+  return `<div class="tag-pills">${tags.map(t => `<a class="tag-pill" href="${BASE}/tags/${encodeURIComponent(t)}/">#${esc(t)}</a>`).join('')}</div>`;
+}
+
+function collectAllTags(posts: Doc<Post>[]): Map<string, number> {
+  const tagCount = new Map<string, number>();
+  for (const p of posts) {
+    const tags = p.data.tags;
+    if (Array.isArray(tags)) {
+      for (const t of tags) {
+        tagCount.set(t, (tagCount.get(t) ?? 0) + 1);
+      }
+    }
+  }
+  return tagCount;
 }
 
 // ---------------------------------------------------------------------------
@@ -860,9 +893,9 @@ function renderExhibitionList(block: Section, exhibitions: Doc<Exhibition>[]): s
 
 function renderCvSection(block: Section): string {
   return `
-<section class="section-narrow">
+<section class="section">
   ${block.heading ? `<h2 class="section-heading">${esc(block.heading)}</h2><div class="section-divider"></div>` : ''}
-  <div class="prose">${markdownToHtml(block.content || '')}</div>
+  <div class="prose" style="max-width:800px;">${markdownToHtml(block.content || '')}</div>
 </section>`;
 }
 
@@ -1195,7 +1228,8 @@ function buildPostPage(post: Doc<Post>, globals: Globals): string {
       <h1 class="section-heading">${esc(d.title)}</h1>
       ${d.date ? `<p style="color:var(--muted);font-size:0.875rem;margin-bottom:2rem;">${formatDate(d.date)}</p>` : ''}
       <div class="prose">${markdownToHtml(d.content)}</div>
-      <p style="margin-top:3rem;"><a href="${BASE}/nyheder/" style="color:#ED155B;">&larr; Alle nyheder</a></p>
+      ${d.tags && d.tags.length > 0 ? `<div style="margin-top:2rem;">${renderTagPills(d.tags)}</div>` : ''}
+      <p style="margin-top:2rem;"><a href="${BASE}/nyheder/" style="color:#ED155B;">&larr; Alle nyheder</a></p>
     </div>
   </article>
   ${footer(globals)}
@@ -1204,7 +1238,10 @@ function buildPostPage(post: Doc<Post>, globals: Globals): string {
 }
 
 function buildForTiden(page: Doc<PageData>, posts: Doc<Post>[], globals: Globals): string {
-  const sorted = [...posts].sort((a, b) => (b.data.date || '').localeCompare(a.data.date || ''));
+  // Show posts tagged "for-tiden", or ALL posts if none have that tag yet
+  const tagged = posts.filter(p => Array.isArray(p.data.tags) && p.data.tags.includes('for-tiden'));
+  const source = tagged.length > 0 ? tagged : posts;
+  const sorted = [...source].sort((a, b) => (b.data.date || '').localeCompare(a.data.date || ''));
   const introSection = page.data.sections?.find(s => s._block === 'text-section');
 
   const cards = sorted.map(p => {
@@ -1226,6 +1263,63 @@ function buildForTiden(page: Doc<PageData>, posts: Doc<Post>[], globals: Globals
     <h1 class="section-heading">For tiden</h1>
     <div class="section-divider"></div>
     ${introSection ? `<div class="prose" style="max-width:700px;margin-bottom:3rem;">${markdownToHtml(introSection.content || '')}</div>` : ''}
+    <div class="news-grid">
+      ${cards}
+    </div>
+  </div>
+  ${footer(globals)}
+</body>
+</html>`;
+}
+
+function buildTagsIndex(posts: Doc<Post>[], globals: Globals): string {
+  const tagMap = collectAllTags(posts);
+  const sortedTags = [...tagMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+
+  const pills = sortedTags.map(([tag, count]) =>
+    `<a class="tag-pill" href="${BASE}/tags/${encodeURIComponent(tag)}/">#${esc(tag)}<span class="tag-count">${count}</span></a>`
+  ).join('\n');
+
+  return `${head('Tags', globals, 'Udforsk emner og tags på tværs af alle nyheder.')}
+<body>
+  ${nav(globals)}
+  <div class="section page-top">
+    <p style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#ED155B;margin-bottom:0.5rem;">Alle tags</p>
+    <h1 class="section-heading">Udforsk emner</h1>
+    <div class="section-divider"></div>
+    <p style="color:var(--muted);margin-bottom:2.5rem;">${sortedTags.length} tags p&aring; tv&aelig;rs af ${posts.length} nyheder</p>
+    <div class="tags-cloud">
+      ${pills}
+    </div>
+  </div>
+  ${footer(globals)}
+</body>
+</html>`;
+}
+
+function buildTagDetail(tag: string, posts: Doc<Post>[], globals: Globals): string {
+  const filtered = posts.filter(p => Array.isArray(p.data.tags) && p.data.tags.includes(tag));
+  const sorted = [...filtered].sort((a, b) => (b.data.date || '').localeCompare(a.data.date || ''));
+
+  const cards = sorted.map(p => {
+    const imgSrc = p.data.featuredImage ? (p.data.featuredImage.startsWith('http') ? p.data.featuredImage : `${BASE}/${p.data.featuredImage}`) : '';
+    return `
+    <a class="news-card" href="${BASE}/nyheder/${p.slug}/">
+      ${imgSrc ? `<img src="${esc(imgSrc)}" alt="" loading="lazy" />` : ''}
+      <div class="news-cat">${esc(p.data.category || 'Nyheder')}</div>
+      <h3>${esc(p.data.title)}</h3>
+      <div class="news-date">${formatDate(p.data.date)}</div>
+    </a>`;
+  }).join('\n');
+
+  return `${head('#' + tag, globals)}
+<body>
+  ${nav(globals)}
+  <div class="section page-top">
+    <p style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#ED155B;margin-bottom:0.5rem;"><a href="${BASE}/tags/" style="color:#ED155B;">&larr; Alle tags</a></p>
+    <h1 class="section-heading">#${esc(tag)}</h1>
+    <div class="section-divider"></div>
+    <p style="color:var(--muted);margin-bottom:2.5rem;">${sorted.length} ${sorted.length === 1 ? 'nyhed' : 'nyheder'}</p>
     <div class="news-grid">
       ${cards}
     </div>
@@ -1510,6 +1604,16 @@ function build() {
   }
   console.log(`  ${posts.length} post pages`);
 
+  // Tags index page
+  writeFile(join(DIST, 'tags', 'index.html'), buildTagsIndex(posts, globals));
+
+  // Tag detail pages
+  const allTags = collectAllTags(posts);
+  for (const [tag] of allTags) {
+    writeFile(join(DIST, 'tags', encodeURIComponent(tag), 'index.html'), buildTagDetail(tag, posts, globals));
+  }
+  console.log(`  ${allTags.size} tag pages`);
+
   // Exhibition index
   // Exhibition index with intro from CMS page content
   const exPage = pages.find(p => p.slug === 'udstillinger');
@@ -1525,7 +1629,7 @@ function build() {
   }
   console.log(`  ${exhibitions.length} exhibition detail pages`);
 
-  const totalPages = pages.length + gallery.length + posts.length + exhibitions.length + 4;
+  const totalPages = pages.length + gallery.length + posts.length + exhibitions.length + allTags.size + 5;
   console.log(`\n✅ Done! ${totalPages} pages → ${DIST.replace(ROOT + '/', '')}/`);
 }
 
