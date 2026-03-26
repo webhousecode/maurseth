@@ -767,7 +767,7 @@ function footer(globals: Globals): string {
 
 function renderTagPills(tags: string[]): string {
   if (!tags || tags.length === 0) return '';
-  return `<div class="tag-pills">${tags.map(t => `<a class="tag-pill" href="${BASE}/tags/${encodeURIComponent(t)}/">#${esc(t)}</a>`).join('')}</div>`;
+  return `<div class="tag-pills">${tags.map(t => `<a class="tag-pill" href="${BASE}/tags/${t}/">#${esc(t)}</a>`).join('')}</div>`;
 }
 
 function collectAllTags(...collections: Doc<any>[][]): Map<string, number> {
@@ -1380,7 +1380,7 @@ function buildTagsIndex(posts: Doc<Post>[], exhibitions: Doc<Exhibition>[], gall
   const totalDocs = posts.length + exhibitions.length + gallery.length + pages.length;
 
   const pills = sortedTags.map(([tag, count]) =>
-    `<a class="tag-pill" href="${BASE}/tags/${encodeURIComponent(tag)}/">#${esc(tag)}<span class="tag-count">${count}</span></a>`
+    `<a class="tag-pill" href="${BASE}/tags/${tag}/">#${esc(tag)}<span class="tag-count">${count}</span></a>`
   ).join('\n');
 
   return `${head('Tags', globals, 'Udforsk emner og tags på tværs af alle sider.')}
@@ -1772,7 +1772,7 @@ function build() {
   // Tag detail pages
   const allTags = collectAllTags(posts, exhibitions, gallery, pages);
   for (const [tag] of allTags) {
-    writeFile(join(DIST, 'tags', encodeURIComponent(tag), 'index.html'), buildTagDetail(tag, posts, exhibitions, gallery, globals));
+    writeFile(join(DIST, 'tags', tag, 'index.html'), buildTagDetail(tag, posts, exhibitions, gallery, globals));
   }
   console.log(`  ${allTags.size} tag pages`);
 
