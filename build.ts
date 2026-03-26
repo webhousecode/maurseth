@@ -248,7 +248,7 @@ img { max-width: 100%; display: block; }
   color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em;
   border-bottom: none !important;
 }
-.nav-dropdown-menu-inner a:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.nav-dropdown-menu-inner a:hover { color: #ED155B; background: rgba(237,21,91,0.05); }
 
 /* Gallery filters */
 .gallery-filters {
@@ -257,21 +257,21 @@ img { max-width: 100%; display: block; }
 .gallery-tab {
   padding: 0.4rem 1rem; font-size: 0.8rem; letter-spacing: 0.06em;
   text-transform: uppercase; color: var(--muted); border: 1px solid var(--border);
-  border-radius: 3px; cursor: pointer; background: transparent; transition: 0.2s;
-  text-decoration: none; display: inline-block;
+  border-radius: 3px; cursor: pointer; background: rgba(237,21,91,0.03); transition: 0.2s;
+  text-decoration: none; display: inline-block; font-family: var(--sans);
 }
-.gallery-tab:hover { color: var(--text); border-color: var(--text); }
-.gallery-tab.active { color: var(--accent); border-color: var(--accent); background: rgba(184,134,11,0.05); }
+.gallery-tab:hover { color: #ED155B; border-color: #ED155B; }
+.gallery-tab.active { color: #ED155B; border-color: #ED155B; background: rgba(237,21,91,0.05); }
 /* Year filter — custom dropdown (no native select) */
 .year-dropdown { position: relative; margin-left: auto; }
 .year-dropdown-toggle {
   padding: 0.4rem 1rem; font-size: 0.8rem; letter-spacing: 0.06em;
   text-transform: uppercase; border: 1px solid var(--border); border-radius: 3px;
-  background: transparent; color: var(--text); font-family: var(--sans);
+  background: rgba(237,21,91,0.03); color: var(--text); font-family: var(--sans);
   cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
 }
 .year-dropdown-toggle::after { content: '\\25BE'; font-size: 0.65em; color: var(--muted); }
-.year-dropdown-toggle.active { color: var(--accent); border-color: var(--accent); }
+.year-dropdown-toggle.active { color: #ED155B; border-color: #ED155B; }
 .year-dropdown-menu {
   display: none; position: absolute; top: 100%; right: 0;
   padding-top: 0.4rem; z-index: 50;
@@ -288,8 +288,8 @@ img { max-width: 100%; display: block; }
   font-family: var(--sans); color: var(--muted); background: none; border: none;
   cursor: pointer; transition: 0.15s;
 }
-.year-dropdown-menu-inner button:hover { color: var(--text); background: rgba(0,0,0,0.03); }
-.year-dropdown-menu-inner button.active { color: var(--accent); font-weight: 500; }
+.year-dropdown-menu-inner button:hover { color: #ED155B; background: rgba(237,21,91,0.05); }
+.year-dropdown-menu-inner button.active { color: #ED155B; font-weight: 500; }
 
 /* Load more */
 .load-more-btn {
