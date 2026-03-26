@@ -6,6 +6,12 @@
     "metaDescription": "Kontakt billedkunstner Grethe Mariann Maurseth i Aalborg. Atelier i Dannebrogsgade 41b. Åben for henvendelser om udstillinger, salg og samarbejde.",
     "sections": [
       {
+        "_block": "hero",
+        "image": "uploads/903-grethe-maler-joern-2.png",
+        "title": "Kontakt",
+        "subtitle": ""
+      },
+      {
         "_block": "contact-info",
         "heading": "Kontakt mig",
         "address": "Dannebrogsgade 41b, baghuset\n9000 Aalborg",
