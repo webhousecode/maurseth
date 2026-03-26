@@ -657,7 +657,7 @@ function head(title: string, globals: Globals, description?: string): string {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>${esc(title)} — ${esc(globals.artistName)}</title>
   ${desc ? `<meta name="description" content="${esc(desc)}" />` : ''}
-  <link rel="icon" type="image/svg+xml" href="${BASE}/uploads/favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="${BASE}/assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -1663,6 +1663,12 @@ function build() {
   if (existsSync(MEDIA_SRC)) {
     console.log('  Copying media...');
     cpSync(MEDIA_SRC, join(DIST, 'uploads'), { recursive: true });
+  }
+
+  // Copy static assets (logo, favicon — not in uploads, safe from deletion)
+  const ASSETS_SRC = join(ROOT, 'public', 'assets');
+  if (existsSync(ASSETS_SRC)) {
+    cpSync(ASSETS_SRC, join(DIST, 'assets'), { recursive: true });
   }
 
   // Build pages from CMS sections
