@@ -51,3 +51,21 @@ npx sirv dist --port 3011   # Preview locally
 - **All content is CMS-editable** — never hardcode content in build.ts
 - **Inline CSS only** — no CDN scripts (Tailwind, Bootstrap, etc.)
 - **BASE_PATH / BUILD_OUT_DIR** — always use env vars for paths
+
+## Project layout
+
+> **Fill this in for THIS repo.** Every cardmem-compatible repo MUST have a `## Project layout` section with the columns `Area | Path | Notes`. The cardmem Init flow (or the `feature` skill) populates it from the repo's actual structure — replace the example rows below.
+
+| Area | Path | Notes |
+|---|---|---|
+| _(example — replace)_ App | `src/` | Main application code |
+| _(example — replace)_ Tests | `tests/` | Test suites |
+
+Replace the example rows above with this repo's real layout before relying on cardmem skills to scope changes.
+
+
+## Fleet rules (cardmem-owned)
+
+@.claude/fleet.md
+@.claude/decisions-index.md
+
