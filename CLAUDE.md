@@ -54,15 +54,15 @@ npx sirv dist --port 3011   # Preview locally
 
 ## Project layout
 
-> **Fill this in for THIS repo.** Every cardmem-compatible repo MUST have a `## Project layout` section with the columns `Area | Path | Notes`. The cardmem Init flow (or the `feature` skill) populates it from the repo's actual structure — replace the example rows below.
-
 | Area | Path | Notes |
 |---|---|---|
-| _(example — replace)_ App | `src/` | Main application code |
-| _(example — replace)_ Tests | `tests/` | Test suites |
-
-Replace the example rows above with this repo's real layout before relying on cardmem skills to scope changes.
-
+| Site generator | `build.ts` | Static build of every page → `dist/` (BASE_PATH / BUILD_OUT_DIR) |
+| CMS schema | `cms.config.ts` | Collections + block types — protected, never remove fields |
+| Content | `content/` | JSON per document: globals, pages, posts, exhibitions, gallery |
+| Static assets | `public/assets/` | Logo + favicon (copied into the build) |
+| Migration | `scripts/migrate.ts` | One-shot WordPress → CMS import; also re-downloads `media/` |
+| Plans | `docs/features/` | cardmem plan-docs (`F<n>-<slug>.md`) |
+| CI | `.github/workflows/` | Fleet secret-gate + security workflows |
 
 ## Fleet rules (cardmem-owned)
 
